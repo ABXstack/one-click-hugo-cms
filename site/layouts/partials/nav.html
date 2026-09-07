@@ -1,8 +1,14 @@
 <nav data-nav class="flex justify-between items-center center bg-white divider-grey relative">
 
-	<!-- Logo -->
-	<a href="/" class="pa3 db mr4 h-100 w3 flex-none">
-		<img src="/img/logo.svg" alt="Kaldi logo" class="br0 db mb0 w-100"/>
+	<!-- Logo + tagline -->
+	<!-- TODO: swap in the real Seniors for Climate logo file once we have it; this is a
+	     text placeholder standing in for the illustrated logo from the screenshot -->
+	<a href="/" class="pa3 mr4 flex-none flex items-center no-underline">
+		<img src="/img/logo.svg" alt="Seniors for Climate logo" class="br0 db mb0" style="height: 48px; width: auto;"/>
+		<span class="ml3 pl3" style="border-left: 2px solid var(--grey-2);">
+			<span class="db f6 ttu b tracked grey-3">British</span>
+			<span class="db f6 ttu b tracked grey-3">Columbia</span>
+		</span>
 	</a>
 
 	<!-- Primary Nav -->
@@ -14,14 +20,20 @@
 		</svg>
 	</div>
 
-	<ul class="flex b grey-3 nav-menu">
-		<li><a href="/products" class="pa3 no-underline db">Products</a></li>
+	<ul class="flex items-center b nav-menu">
+		<!-- TODO: confirm whether "Event Map" is needed for the BC hub, or if it was
+		     national-specific and should be dropped -->
+		<li><a href="/about" class="pa3 no-underline db primary">About Us</a></li>
 
-		<li><a href="/values" class="pa3 no-underline db">Values</a></li>
+		<li><a href="/take-action" class="pa3 no-underline db primary">Take Action</a></li>
 
-		<li><a href="/post" class="pa3 no-underline db">Blog</a></li>
+		<li><a href="/event-map" class="pa3 no-underline db primary">Event Map</a></li>
 
-		<li><a href="/contact" class="pa3 no-underline db">Contact</a></li>
+		<li><a href="/contact" class="pa3 no-underline db primary">Contact Us</a></li>
+
+		<li><a href="/join" class="pa3 no-underline db primary">Join Us</a></li>
+
+		<li class="pl2 pr3"><a href="/donate" class="btn-donate ttu">Donate</a></li>
 	</ul>
 
 </nav>

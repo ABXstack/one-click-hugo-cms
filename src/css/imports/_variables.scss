@@ -1,6 +1,10 @@
 :root {
 	/* Colors */
-	--primary: rgba(255, 68, 0, 1);
+	/* TODO: placeholder brand colors eyeballed from a screenshot — replace with exact
+	   hex values once we have the real logo file / brand guide from Seniors for Climate */
+	--primary: rgba(31, 58, 95, 1); /* navy - nav links, buttons */
+	--gold: rgba(217, 180, 74, 1); /* gold - donate button text */
+	--green: rgba(79, 121, 66, 1); /* green - wordmark */
 	--highlight: rgba(254, 213, 198, 1);
 	--white: rgba(255, 255, 255, 1);
 	--off-white: rgba(255, 253, 252, 1);
