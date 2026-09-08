@@ -1,50 +1,45 @@
-<nav data-nav class="flex justify-between items-center center bg-white divider-grey relative">
+<a class="skip-link" href="#main">Skip to content</a>
 
-	<!-- Logo + tagline -->
-	<a href="/" class="pa3 mr4 flex-none flex items-center no-underline">
-		<img src="/img/logo.png" alt="Seniors for Climate logo" class="br0 db mb0" style="height: 48px; width: auto;"/>
-		<span class="ml3 pl3" style="border-left: 2px solid var(--grey-2);">
-			<span class="db f6 ttu b tracked grey-3">British</span>
-			<span class="db f6 ttu b tracked grey-3">Columbia</span>
-		</span>
-	</a>
+<header class="masthead">
+	<div class="masthead-inner">
 
-	<!-- Primary Nav -->
-	<div data-mobile-menu class="mobile-menu-container">
-		<svg viewBox="0 0 100 80" width="40" height="25" class="mobile-menu-icon">
-			<rect class="menu-icon-top mobile-menu-inner" width="100" height="8"></rect>
-			<rect class="menu-icon-middle mobile-menu-inner" y="30" width="100" height="8"></rect>
-			<rect class="menu-icon-bottom mobile-menu-inner" y="60" width="100" height="8"></rect>
-		</svg>
+		<a class="brand" href="/">
+			<img src="/img/logo.png" alt="Seniors for Climate">
+			<span class="brand-region">British<br>Columbia</span>
+		</a>
+
+		<button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+			<span class="nav-toggle-bars" aria-hidden="true"></span>
+			Menu
+		</button>
+
+		<nav class="nav" aria-label="Main">
+			<ul id="nav-menu">
+				<li class="has-sub">
+					<a href="/about/">About Us</a>
+					<ul class="sub">
+						<li><a href="/about/canadians-thoughts-on-climate-change/">Canadians' Thoughts on Climate Change</a></li>
+						<li><a href="/about/what-is-climate-change/">What Is Climate Change and How Did We Get Here?</a></li>
+						<li><a href="/about/climate-change-and-seniors/">Climate Change and Seniors</a></li>
+						<li><a href="/about/climate-solutions/">Climate Solutions</a></li>
+					</ul>
+				</li>
+
+				<li class="has-sub">
+					<a href="/take-action/">Take Action</a>
+					<ul class="sub">
+						<li><a href="/take-action/meet-your-elected-officials/">Meet With Your Elected Officials</a></li>
+						<li><a href="/take-action/join-us/">Join Us</a></li>
+					</ul>
+				</li>
+
+				<li><a href="/news/">News</a></li>
+				<li><a href="/contact/">Contact</a></li>
+
+				<li><a class="btn btn-quiet" href="/take-action/join-us/">Join us</a></li>
+				<li><a class="btn" href="/donate/">Donate</a></li>
+			</ul>
+		</nav>
+
 	</div>
-
-	<ul class="flex items-center b nav-menu">
-		<li class="has-dropdown">
-			<a href="/about/" class="pa3 no-underline db primary">About Us</a>
-			<ul class="dropdown-menu">
-				<li><a href="/about/canadians-thoughts-on-climate-change/" class="pa2 no-underline db">Canadians' Thoughts on Climate Change</a></li>
-				<li><a href="/about/what-is-climate-change/" class="pa2 no-underline db">What Is Climate Change?</a></li>
-				<li><a href="/about/climate-change-and-seniors/" class="pa2 no-underline db">Climate Change and Seniors</a></li>
-				<li><a href="/about/climate-solutions/" class="pa2 no-underline db">Climate Solutions</a></li>
-			</ul>
-		</li>
-
-		<li class="has-dropdown">
-			<a href="/take-action/" class="pa3 no-underline db primary">Take Action</a>
-			<ul class="dropdown-menu">
-				<li><a href="/take-action/meet-your-elected-officials/" class="pa2 no-underline db">Meet With Your Elected Officials</a></li>
-			</ul>
-		</li>
-
-		<li><a href="/news/" class="pa3 no-underline db primary">News</a></li>
-
-		<li><a href="/blog/" class="pa3 no-underline db primary">Blog</a></li>
-
-		<li><a href="/contact/" class="pa3 no-underline db primary">Contact Us</a></li>
-
-		<li class="pl2"><a href="/take-action/join-us/" class="btn ttu">Join Us</a></li>
-
-		<li class="pl2 pr3"><a href="/donate/" class="btn-donate ttu">Donate</a></li>
-	</ul>
-
-</nav>
+</header>

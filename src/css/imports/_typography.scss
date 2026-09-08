@@ -6,23 +6,28 @@ html {
   @media (--breakpoint-large) {
     font-size: var(--font-size-l);
   }
-  background-color: var(--black);
+  /* Was var(--black): a leftover from the upstream template that put a
+     black backdrop behind every page. */
+  background-color: var(--paper);
 }
 
 
 body {
   font-family: var(--font-family);
-  font-size: var(--spacing-medium);
+  font-size: 1rem;
   line-height: var(--line-height);
   font-weight: var(--body-font-weight);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--off-white);
+  background-color: var(--paper);
  }
 
 p {
   margin-bottom: var(--spacing-medium);
-  max-width: 32rem;
+  /* The global max-width used to be 32rem, narrower than the mw7 (48rem)
+     containers wrapping it, so paragraphs stopped short of their own
+     headings on every page. Measure is now set per component instead. */
 }
 
 strong {

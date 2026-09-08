@@ -3,9 +3,7 @@ title: "Join Us"
 description: "Volunteer with Seniors for Climate in British Columbia — join our monthly online meetings and help build climate action across the province."
 ---
 
-### There is room here for you.
-
-However much time you have, and whatever you are good at.
+There is room here for you — however much time you have, and whatever you are good at.
 
 ## What this looks like
 
@@ -27,4 +25,4 @@ The simplest first step is to come to a meeting. We meet online once a month, an
 
 Email us at [bc-hub@seniorsforclimate.org](mailto:bc-hub@seniorsforclimate.org) and we will send you the details.
 
-<a href="mailto:bc-hub@seniorsforclimate.org" class="btn-donate dib mt2">Email us to join</a>
+<a href="mailto:bc-hub@seniorsforclimate.org" class="btn">Email us to join</a>

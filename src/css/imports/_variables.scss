@@ -1,29 +1,57 @@
 :root {
-	/* Colors — Seniors for Climate brand palette */
-	--primary: #385080; /* main color */
-	--accent: #D0E870; /* highlight color */
-	--secondary-1: #0077B5; /* secondary blue */
-	--secondary-2: #0085FF; /* secondary blue */
-	--secondary-3: #355AAB; /* secondary blue */
-	--highlight: rgba(254, 213, 198, 1);
-	--white: #FFFFFF;
-	--off-white: #F2F2F2;
-	--grey-1: #F2F2F2;
-	--grey-2: #EAEAEA;
-	--grey-3: #9B9B9B;
-	--grey-4: rgba(66, 64, 64, 1);
-	--black: #000000; /* light background font color */
+	/* ------------------------------------------------------------------
+	   Colors — sampled from the Seniors for Climate logo artwork.
+	   The wordmark is green; the illustration blue is used for links.
+	   The previous navy (#385080) appears nowhere in the brand assets.
+	   ------------------------------------------------------------------ */
+	--green:       #4E7A1E; /* logo wordmark green — primary */
+	--green-deep:  #3B5D16; /* hover, headings on light, footer ground */
+	--blue:        #0D6591; /* logo illustration blue — links */
+	--blue-deep:   #084B6D;
+	--ink:         #1A1D1A; /* body text */
+	--ink-muted:   #5A6154; /* secondary text — 6.4:1 on white, passes AA */
+	--paper:       #FFFFFF; /* reading surface */
+	--band:        #EDF1E4; /* section bands, tinted from the green */
+	--band-deep:   #E0E7D2;
+	--band-tint:   #F7F9F2; /* hover wash on resource entries */
+	--rule:        #CFD6C2; /* hairlines */
+	--focus:       #B8410E; /* focus ring — deliberately outside the palette */
+
+	/* Legacy aliases. Tachyons modules and any leftover template markup
+	   reference these names; they now resolve to the palette above. */
+	--primary:     var(--green);
+	--accent:      var(--green-deep);
+	--secondary-1: var(--blue);
+	--secondary-2: var(--blue-deep);
+	--secondary-3: var(--green-deep);
+	--highlight:   var(--band-deep);
+	--white:       #FFFFFF;
+	--off-white:   var(--band);
+	--grey-1:      #F2F2F2;
+	--grey-2:      var(--rule);
+	--grey-3:      var(--ink-muted); /* was #9B9B9B — 2.8:1 on white, failed AA */
+	--grey-4:      var(--ink-muted);
+	--black:       var(--ink);
 
 	/* Typography */
-	--font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'avenir next', avenir, helvetica, 'helvetica neue', ubuntu, roboto, noto, 'segoe ui', arial, sans-serif;
-	--line-height: 1.5;
+	--font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+	--font-sans:  "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+	--font-family: var(--font-sans);
+	--line-height: 1.6;
 
-	--font-size: 18px;
+	/* One size, held across breakpoints. The old 18/20/22px ramp made
+	   Tachyons' f1 (3rem) render at 66px on desktop. */
+	--font-size: 20px;
 	--font-size-m: 20px;
-	--font-size-l: 22px;
+	--font-size-l: 20px;
 
 	--body-font-weight: 400;
 	--bold-font-weight: 700;
+
+	/* Measures */
+	--measure: 34rem;
+	--page: 54rem;
+	--measure-resources: 42rem;
 
 	/* Sizing */
 	--spacing-none: 0;
@@ -35,7 +63,7 @@
 	--spacing-extra-extra-large: 8rem;
 	--spacing-extra-extra-extra-large: 16rem;
 
-	/* Miscelaneous */
-	--border-radius: .25rem;
+	/* Miscellaneous */
+	--border-radius: 3px;
 	--hover-transition: all 150ms ease;
 }

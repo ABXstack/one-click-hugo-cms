@@ -1,68 +1,66 @@
 {{ define "main" }}
 
-<!-- Hero -->
-<div class="bg-off-white ph3">
-  <div class="mw7 center pv5 tc">
-    <h1 class="f1 lh-title mb3">{{ .Params.hero.headline }}</h1>
-    <p class="f3 lh-copy grey-3 mb4">{{ .Params.hero.subhead }}</p>
-    <div>
-      {{ with .Params.hero.primary_cta }}
-        <a href="{{ .link }}" class="btn-donate dib mr3">{{ .text }}</a>
-      {{ end }}
-      {{ with .Params.hero.secondary_cta }}
-        <a href="{{ .link }}" class="btn dib">{{ .text }}</a>
-      {{ end }}
-    </div>
-  </div>
-</div>
+<section class="hero">
+	<div class="wrap">
+		<h1>{{ .Params.hero.headline }}</h1>
+		<p>{{ .Params.hero.subhead }}</p>
+		<div class="hero-actions">
+			{{ with .Params.hero.primary_cta }}
+				<a href="{{ .link }}" class="btn">{{ .text }}</a>
+			{{ end }}
+			{{ with .Params.hero.secondary_cta }}
+				<a href="{{ .link }}" class="btn btn-quiet">{{ .text }}</a>
+			{{ end }}
+		</div>
+	</div>
+</section>
 
-<!-- Who we are -->
-<div class="mw7 center ph3 pv5">
-  <h2 class="f2 lh-title mb3">Who we are</h2>
-  {{ range .Params.who_we_are.paragraphs }}
-    <p class="lh-copy mb3">{{ . }}</p>
-  {{ end }}
-  {{ with .Params.who_we_are.link }}
-    <a href="{{ .link }}" class="b no-underline primary">{{ .text }} →</a>
-  {{ end }}
-</div>
+<section class="section">
+	<div class="wrap">
+		<h2>Who we are</h2>
+		{{ range .Params.who_we_are.paragraphs }}
+			<p>{{ . }}</p>
+		{{ end }}
+		{{ with .Params.who_we_are.link }}
+			<p><a class="inline-link" href="{{ .link }}">{{ .text }}</a></p>
+		{{ end }}
+	</div>
+</section>
 
-<!-- Get involved -->
-<div class="bg-off-white ph3">
-  <div class="mw7 center pv5">
-    <h2 class="f2 lh-title mb3">Get involved</h2>
-    <p class="lh-copy mb3">{{ .Params.get_involved.text }}</p>
-    <ul class="lh-copy mb4">
-      {{ range .Params.get_involved.bullets }}
-        <li class="mb2">{{ . | safeHTML }}</li>
-      {{ end }}
-    </ul>
-    {{ with .Params.get_involved.cta }}
-      <a href="{{ .link }}" class="btn-donate dib">{{ .text }}</a>
-    {{ end }}
-  </div>
-</div>
+<section class="section section-band">
+	<div class="wrap">
+		<h2>Get involved</h2>
+		<p>{{ .Params.get_involved.text }}</p>
+		<ul>
+			{{ range .Params.get_involved.bullets }}
+				<li>{{ . | safeHTML }}</li>
+			{{ end }}
+		</ul>
+		{{ with .Params.get_involved.cta }}
+			<p style="margin-top:1.5rem"><a href="{{ .link }}" class="btn">{{ .text }}</a></p>
+		{{ end }}
+	</div>
+</section>
 
-<!-- Learn more, do more -->
-<div class="mw8 center ph3 pv5">
-  <h2 class="f2 lh-title mb3 tc">{{ .Params.learn_more.heading }}</h2>
-  <p class="lh-copy mb4 tc mw6 center">{{ .Params.learn_more.intro }}</p>
+<section class="section">
+	<div class="wrap">
+		<h2>{{ .Params.learn_more.heading }}</h2>
+		<p>{{ .Params.learn_more.intro }}</p>
 
-  {{ range .Params.learn_more.groups }}
-    <h3 class="f4 b lh-title mb3 mt4">{{ .heading }}</h3>
-    <ul class="flex-ns flex-wrap mhn2-ns list pl0">
-      {{ range .items }}
-        <li class="w-50-ns ph2-ns mb3">
-          <a href="{{ .link }}" class="no-underline">
-            <div class="pa3 h-100 bg-off-white br2">
-              <h4 class="f5 b lh-title mb2 primary">{{ .title }}</h4>
-              <p class="lh-copy grey-3 ma0">{{ .text }}</p>
-            </div>
-          </a>
-        </li>
-      {{ end }}
-    </ul>
-  {{ end }}
-</div>
+		<div class="directory">
+			{{ range .Params.learn_more.groups }}
+				<div class="dir-group">
+					<h3>{{ .heading }}</h3>
+					{{ range .items }}
+						<a class="dir-row" href="{{ .link }}">
+							<span class="dir-title">{{ .title }}</span>
+							<p class="dir-desc">{{ .text }}</p>
+						</a>
+					{{ end }}
+				</div>
+			{{ end }}
+		</div>
+	</div>
+</section>
 
 {{ end }}
