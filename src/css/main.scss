@@ -70,10 +70,10 @@
 @use './imports/_z-index';
 @use './imports/_responsive-nav';
 @use './imports/_styles';
-@use './imports/_sfc';
 @use './imports/_buttons';
 @use './imports/_svg';
 @use './imports/_cms';
+@use './imports/_sfc';
 
 /* Variables */
 /* Importing here will allow you to override any variables in the modules */

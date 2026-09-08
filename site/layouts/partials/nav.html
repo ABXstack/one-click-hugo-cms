@@ -10,14 +10,17 @@
 
 		<button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
 			<span class="nav-toggle-bars" aria-hidden="true"></span>
-			Menu
+			<span class="nav-toggle-label">Menu</span>
 		</button>
 
 		<nav class="nav" aria-label="Main">
 			<ul id="nav-menu">
 				<li class="has-sub">
-					<a href="/about/">About Us</a>
-					<ul class="sub">
+					<div class="nav-parent">
+						<a href="/about/">About Us</a>
+						<button class="sub-toggle" type="button" aria-expanded="false" aria-controls="about-submenu"><span class="sr-only">Show About Us pages</span></button>
+					</div>
+					<ul class="sub" id="about-submenu">
 						<li><a href="/about/canadians-thoughts-on-climate-change/">Canadians' Thoughts on Climate Change</a></li>
 						<li><a href="/about/what-is-climate-change/">What Is Climate Change and How Did We Get Here?</a></li>
 						<li><a href="/about/climate-change-and-seniors/">Climate Change and Seniors</a></li>
@@ -26,8 +29,11 @@
 				</li>
 
 				<li class="has-sub">
-					<a href="/take-action/">Take Action</a>
-					<ul class="sub">
+					<div class="nav-parent">
+						<a href="/take-action/">Take Action</a>
+						<button class="sub-toggle" type="button" aria-expanded="false" aria-controls="action-submenu"><span class="sr-only">Show Take Action pages</span></button>
+					</div>
+					<ul class="sub" id="action-submenu">
 						<li><a href="/take-action/meet-your-elected-officials/">Meet With Your Elected Officials</a></li>
 						<li><a href="/take-action/join-us/">Join Us</a></li>
 					</ul>
@@ -36,8 +42,10 @@
 				<li><a href="/news/">News</a></li>
 				<li><a href="/contact/">Contact</a></li>
 
-				<li><a class="btn btn-quiet" href="/take-action/join-us/">Join us</a></li>
-				<li><a class="btn" href="/donate/">Donate</a></li>
+				<li class="nav-actions">
+					<a class="btn btn-quiet" href="/take-action/join-us/">Join us</a>
+					<a class="btn btn-donate" href="/donate/">Donate</a>
+				</li>
 			</ul>
 		</nav>
 
