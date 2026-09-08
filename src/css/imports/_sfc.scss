@@ -38,6 +38,15 @@ img { max-width: 100%; height: auto; display: block; }
   background: var(--paper);
 }
 
+@media (min-width: 62.01rem) {
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(56, 80, 128, 0.1);
+  }
+}
+
 .masthead-inner {
   max-width: var(--page);
   margin: 0 auto;
