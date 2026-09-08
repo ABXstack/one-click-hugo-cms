@@ -574,8 +574,10 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 40rem) {
   html { font-size: 18px; }
   .wrap, .masthead-inner { padding-left: 1.1rem; padding-right: 1.1rem; }
-  .brand img { height: 48px; }
-  .brand-region { display: none; }
+  .masthead-inner { gap: 0.75rem; }
+  .brand { gap: 0.55rem; }
+  .brand img { height: 40px; }
+  .brand-region { display: block; padding-left: 0.55rem; font-size: 0.72rem; }
   .hero-copy { padding: 3rem 1.1rem; }
   .hero-photo { height: 70vw; }
   .hero h1 { max-width: none; }

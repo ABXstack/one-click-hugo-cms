@@ -2,14 +2,48 @@
 
 import "./css/main.scss";
 
-const mobileMenu = document.querySelector("[data-mobile-menu]");
-const nav = document.querySelector("[data-nav]");
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".nav-toggle");
+  const menu = document.getElementById("nav-menu");
 
-function toggleMobileMenu() {
-  nav.classList.toggle("menu-open");
-}
+  if (toggle && menu) {
+    const closeMenu = () => {
+      toggle.setAttribute("aria-expanded", "false");
+      menu.classList.remove("is-open");
+    };
 
-mobileMenu.addEventListener("click", toggleMobileMenu);
+    toggle.addEventListener("click", () => {
+      const willOpen = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(willOpen));
+      menu.classList.toggle("is-open", willOpen);
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        closeMenu();
+        toggle.focus();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.matchMedia("(min-width: 62.01rem)").matches) closeMenu();
+    });
+  }
+
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", (user) => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+});
 
 // Say hello
 // eslint-disable-next-line no-console
