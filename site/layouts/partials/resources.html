@@ -19,7 +19,7 @@
 	<ul class="res-list">
 		{{ range . }}
 			<li class="entry">
-				<a class="entry-title" href="{{ .url }}">{{ .title }}</a>
+				<a class="entry-title" href="{{ .url }}"{{ if or (hasPrefix .url "https://") (hasPrefix .url "http://") }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .title }}</a>
 
 				{{ if or .publisher .date .format }}
 					<p class="entry-meta">
@@ -35,7 +35,7 @@
 					<ul class="entry-children">
 						{{ range . }}
 							<li>
-								<a class="entry-title" href="{{ .url }}">{{ .title }}</a>
+								<a class="entry-title" href="{{ .url }}"{{ if or (hasPrefix .url "https://") (hasPrefix .url "http://") }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .title }}</a>
 								{{ if or .publisher .format }}
 									<p class="entry-meta">
 										{{ with .publisher }}<span class="pub">{{ . }}</span>{{ end }}
