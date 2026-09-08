@@ -1,21 +1,27 @@
 {{ define "main" }}
 
 <section class="hero">
-	<div class="wrap">
-		<h1>{{ .Params.hero.headline }}</h1>
-		<p>{{ .Params.hero.subhead }}</p>
-		<div class="hero-actions">
-			{{ with .Params.hero.primary_cta }}
-				<a href="{{ .link }}" class="btn">{{ .text }}</a>
-			{{ end }}
-			{{ with .Params.hero.secondary_cta }}
-				<a href="{{ .link }}" class="btn btn-quiet">{{ .text }}</a>
-			{{ end }}
+	<div class="hero-grid">
+		<div class="hero-copy">
+			<p class="hero-kicker">Seniors for Climate · British Columbia</p>
+			<h1>{{ .Params.hero.headline }}</h1>
+			<p>{{ .Params.hero.subhead }}</p>
+			<div class="hero-actions">
+				{{ with .Params.hero.primary_cta }}
+					<a href="{{ .link }}" class="btn">{{ .text }}</a>
+				{{ end }}
+				{{ with .Params.hero.secondary_cta }}
+					<a href="{{ .link }}" class="btn btn-quiet">{{ .text }}</a>
+				{{ end }}
+			</div>
+		</div>
+		<div class="hero-photo">
+			<img src="/img/seniors-climate-march.jpg" alt="A diverse group of older adults marching together for climate action in British Columbia">
 		</div>
 	</div>
 </section>
 
-<section class="section">
+<section class="section section-intro">
 	<div class="wrap">
 		<h2>Who we are</h2>
 		{{ range .Params.who_we_are.paragraphs }}
@@ -27,7 +33,7 @@
 	</div>
 </section>
 
-<section class="section section-band">
+<section class="section section-band section-action">
 	<div class="wrap">
 		<h2>Get involved</h2>
 		<p>{{ .Params.get_involved.text }}</p>
@@ -42,7 +48,7 @@
 	</div>
 </section>
 
-<section class="section">
+<section class="section section-directory">
 	<div class="wrap">
 		<h2>{{ .Params.learn_more.heading }}</h2>
 		<p>{{ .Params.learn_more.intro }}</p>
