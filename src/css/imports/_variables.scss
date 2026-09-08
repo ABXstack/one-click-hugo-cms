@@ -1,13 +1,12 @@
 :root {
-	/* Colors */
-	/* TODO: placeholder brand colors eyeballed from a screenshot — replace with exact
-	   hex values once we have the real logo file / brand guide from Seniors for Climate */
-	--primary: rgba(31, 58, 95, 1); /* navy - nav links, buttons */
-	--gold: rgba(217, 180, 74, 1); /* gold - donate button text */
-	--green: rgba(79, 121, 66, 1); /* green - wordmark */
+	/* Colors — Seniors for Climate brand palette */
+	--primary: #385080; /* steelblue - nav links, buttons */
+	--accent: #D0E870; /* khaki - donate button text, highlights */
+	--brand-gray: #807878; /* gray */
+	--brand-lavender: #D8E8F8; /* lavender */
 	--highlight: rgba(254, 213, 198, 1);
 	--white: rgba(255, 255, 255, 1);
-	--off-white: rgba(255, 253, 252, 1);
+	--off-white: #F8F8F8; /* whitesmoke */
 	--grey-1: rgba(245, 243, 242, 1);
 	--grey-2: rgba(235, 231, 230, 1);
 	--grey-3: rgba(89, 87, 86, 1);
