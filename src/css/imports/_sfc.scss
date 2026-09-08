@@ -561,12 +561,9 @@ img { max-width: 100%; height: auto; display: block; }
 .footer-cols li { margin-bottom: 0.4rem; }
 .footer-cols p { margin: 0 0 0.4rem; font-size: 0.9rem; }
 
-.footer-brand span {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  display: block;
-}
+.footer-brand-link { align-items: center; }
+.footer-brand-link img { height: 64px; width: auto; }
+.footer-brand-link .brand-region { color: var(--white); border-left-color: var(--highlight); }
 
 /* ------------------------------------------------------------
    Responsive
