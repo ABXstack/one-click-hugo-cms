@@ -1,0 +1,1917 @@
+From 21240f6b622c0ac19a2ce4f267533b5d767b6c7d Mon Sep 17 00:00:00 2001
+From: Redesign <redesign@local>
+Date: Tue, 8 Sep 2026 02:52:41 +0000
+Subject: [PATCH] Redesign: brand palette, readable type, structured resource
+ pages
+
+Visual and structural pass over the Seniors for Climate BC site.
+
+Fixes carried over from the upstream coffee-shop template:
+- html had background-color: var(--black), putting a black backdrop
+  behind every page
+- p had a global max-width of 32rem inside 48rem containers, so
+  paragraphs stopped short of their own headings
+- root font-size ramped 18/20/22px, making Tachyons' f1 render at 66px
+- --grey-3 was #9B9B9B: 2.8:1 on white, failing WCAG AA on the hero
+  subhead and all card text
+- the footer set #385080 headings on pure black, roughly 2.4:1
+- the mobile hamburger had markup and CSS but no JS ever toggled
+  .menu-open, so tapping it did nothing
+- mask-icon and theme-color were still the template's #ff4400
+
+Palette now comes from the logo artwork (green #4E7A1E wordmark, blue
+#0D6591 illustration). The previous --primary navy #385080 appears in
+no brand asset; see OPEN QUESTIONS in the content deliverable.
+
+Resource pages moved from markdown link lists into front matter, so
+title / publisher / date / format / description are separate fields
+rather than one string joined by em dashes. Rendered by
+partials/resources.html. All 65 URLs verified byte-identical to the
+originals, including the Sierra Club mkt_tok parameter and every
+Google Drive link.
+
+Type is Source Serif 4 for headings and resource titles, Public Sans
+for body, at a flat 20px base.
+---
+ .../index.md                                  |  61 +-
+ .../about/climate-change-and-seniors/index.md |  38 +-
+ site/content/about/climate-solutions/index.md |  61 +-
+ .../about/what-is-climate-change/index.md     |  42 +-
+ site/content/news/_index.md                   |  38 +-
+ site/content/take-action/_index.md            | 164 +++--
+ site/content/take-action/join-us/index.md     |   6 +-
+ .../meet-your-elected-officials/index.md      |  18 +-
+ site/layouts/_default/baseof.html             |   6 +-
+ site/layouts/_default/list.html               |  19 +-
+ site/layouts/_default/single.html             |  19 +-
+ site/layouts/index.html                       | 118 ++--
+ site/layouts/partials/footer.html             |  40 +-
+ site/layouts/partials/head.html               |  13 +-
+ site/layouts/partials/nav.html                |  89 ++-
+ site/layouts/partials/page-head.html          |  13 +
+ site/layouts/partials/resources.html          |  93 +++
+ src/css/imports/_sfc.scss                     | 625 ++++++++++++++++++
+ src/css/imports/_typography.scss              |  13 +-
+ src/css/imports/_variables.scss               |  68 +-
+ src/css/main.scss                             |   1 +
+ src/js/app.js                                 |  25 +
+ 22 files changed, 1273 insertions(+), 297 deletions(-)
+ create mode 100644 site/layouts/partials/page-head.html
+ create mode 100644 site/layouts/partials/resources.html
+ create mode 100644 src/css/imports/_sfc.scss
+
+diff --git a/site/content/about/canadians-thoughts-on-climate-change/index.md b/site/content/about/canadians-thoughts-on-climate-change/index.md
+index 988db4c..47c4ad9 100644
+--- a/site/content/about/canadians-thoughts-on-climate-change/index.md
++++ b/site/content/about/canadians-thoughts-on-climate-change/index.md
+@@ -1,26 +1,51 @@
+ ---
+ title: "Canadians' Thoughts on Climate Change"
+ description: "Polls, surveys, and research showing how Canadians and British Columbians really feel about climate change."
++resources:
++  - heading: "Re.Climate"
++    entries:
++      - title: "Canadians Haven't Given Up on Climate Action. They Just Think Everyone Else Has."
++        url: "https://reclimate.ca/canadians-havent-given-up-on-climate-action-they-just-think-everyone-else-has/"
++        publisher: "Re.Climate"
++        description: "Hopeful research on the gap between what Canadians actually believe and what they assume everyone else believes. Includes Canadian videos and a resource library."
++      - title: "Canadians (Still) Care About Climate Change"
++        url: "https://reclimate.ca/resource/canadians-still-care-about-climate-change-technical-report/"
++        publisher: "Re.Climate"
++        description: "Two short videos: one on Canada as a renewable energy superpower, one on how much Canadians still care."
++      - title: "2026 Technical Report"
++        url: "https://reclimate.ca/canadians-still-care-about-climate-change-technical-report/"
++        publisher: "Re.Climate"
++        description: "The full data behind the findings above."
++      - title: "Re.Climate resource library"
++        url: "https://reclimate.ca/resource-library/"
++        publisher: "Re.Climate"
++        description: "A broad collection of Canadian climate communication research to browse."
++  - heading: "British Columbia"
++    entries:
++      - title: "BC polling results show how BC residents view climate costs"
++        url: "https://www.wcel.org/publication/bc-polling-results-show-how-bc-residents-view-climate-costs"
++        publisher: "West Coast Environmental Law"
++        description: "What your fellow British Columbians think about who should pay for climate damage."
++      - title: "BC Climate Emergency Campaign"
++        url: "https://bcclimateemergency.ca/"
++        description: "The campaign's home page, and a good starting point for BC-specific advocacy."
++      - title: "Climate and Building Policy Survey (November 2025)"
++        url: "https://static1.squarespace.com/static/632a10e8bb5f3937c1451130/t/695ec1eac5b0654e28cc880e/1767817706054/BC+Climate+Emergency+-+climate+and+buildings+poll+-+For+Public_November+2025.pdf"
++        publisher: "BC Climate Emergency Campaign"
++        format: "PDF"
++        description: "Survey findings on how much people know and want when it comes to renewable building solutions."
++  - heading: "National and global"
++    entries:
++      - title: "Climate concern remains high, but affordability still dominates Canadians' priorities"
++        url: "https://abacusdata.ca/climate-concern-remains-high-but-affordability-still-dominates-canadians-priorities/"
++        publisher: "Abacus Data"
++        date: "May 2026"
++        description: "Concern about climate is holding steady, but cost of living is what people rank first."
++      - title: "89Percent"
++        url: "https://89percent.org/"
++        description: "Between 80 and 89 percent of people worldwide want their governments doing more about climate change."
+ ---
+ 
+ Do Canadians care about the climate? They sure do.
+ 
+ One of the most persistent myths about climate action is that most people have stopped caring. The research says otherwise — and it says so consistently, here in British Columbia and across the country. The polls, reports, and videos below are worth knowing about, because they are useful ammunition in a conversation with a neighbour, a letter to the editor, or a meeting with an elected official.
+-
+-## Re.Climate
+-
+-- [Canadians Haven't Given Up on Climate Action. They Just Think Everyone Else Has.](https://reclimate.ca/canadians-havent-given-up-on-climate-action-they-just-think-everyone-else-has/) — Re.Climate — Hopeful research on the gap between what Canadians actually believe and what they assume everyone else believes. Includes Canadian videos and a resource library.
+-- [Canadians (Still) Care About Climate Change](https://reclimate.ca/resource/canadians-still-care-about-climate-change-technical-report/) — Re.Climate — Two short videos: one on Canada as a renewable energy superpower, one on how much Canadians still care.
+-- [2026 Technical Report](https://reclimate.ca/canadians-still-care-about-climate-change-technical-report/) — Re.Climate — The full data behind the findings above.
+-- [Re.Climate resource library](https://reclimate.ca/resource-library/) — Re.Climate — A broad collection of Canadian climate communication research to browse.
+-
+-## British Columbia
+-
+-- [BC polling results show how BC residents view climate costs](https://www.wcel.org/publication/bc-polling-results-show-how-bc-residents-view-climate-costs) — West Coast Environmental Law — What your fellow British Columbians think about who should pay for climate damage.
+-- [BC Climate Emergency Campaign](https://bcclimateemergency.ca/) — The campaign's home page, and a good starting point for BC-specific advocacy.
+-- [Climate and Building Policy Survey (November 2025)](https://static1.squarespace.com/static/632a10e8bb5f3937c1451130/t/695ec1eac5b0654e28cc880e/1767817706054/BC+Climate+Emergency+-+climate+and+buildings+poll+-+For+Public_November+2025.pdf) — BC Climate Emergency Campaign (PDF) — Survey findings on how much people know and want when it comes to renewable building solutions.
+-
+-## National and global
+-
+-- [Climate concern remains high, but affordability still dominates Canadians' priorities](https://abacusdata.ca/climate-concern-remains-high-but-affordability-still-dominates-canadians-priorities/) — Abacus Data, May 2026 — Concern about climate is holding steady, but cost of living is what people rank first.
+-- [89Percent](https://89percent.org/) — Between 80 and 89 percent of people worldwide want their governments doing more about climate change.
+diff --git a/site/content/about/climate-change-and-seniors/index.md b/site/content/about/climate-change-and-seniors/index.md
+index 868dda8..2ac3dee 100644
+--- a/site/content/about/climate-change-and-seniors/index.md
++++ b/site/content/about/climate-change-and-seniors/index.md
+@@ -1,17 +1,37 @@
+ ---
+ title: "Climate Change and Seniors"
+ description: "Why older adults are especially at risk from climate change — and the role seniors can play in the response."
++resources:
++  - heading: "Resources"
++    entries:
++      - title: "10 reasons why Seniors must step up for Climate Action"
++        url: "https://drive.google.com/file/d/1I0n6H4iO4Dfm5xVGy_r7-fejokdYOpPa/view?usp=drive_link"
++        publisher: "Seniors for Climate BC"
++        format: "PDF"
++        description: "Our own short guide to why you should get involved."
++      - title: "Healthy Aging in a Changing Climate"
++        url: "https://climatechange.pathways.med.ubc.ca/advice-from-the-experts/healthy-aging-in-a-changing-climate/"
++        publisher: "UBC Faculty of Medicine"
++        description: "Expert advice on aging well as the climate shifts."
++      - title: "How older adults can reduce risks of climate change hazards"
++        url: "https://bchealthycommunities.ca/index.php/2024/04/04/how-older-adults-can-reduce-risks-of-climate-change-hazards/"
++        publisher: "BC Healthy Communities"
++        description: "Why older adults are more vulnerable during extreme weather, plus BC resources for planning and preparedness."
++      - title: "Why climate change is a health crisis for older adults in Canada"
++        url: "https://entente.ca/why-climate-change-is-a-health-crisis-for-older-adults-in-canada/"
++        publisher: "Entente Education Canada"
++        description: "The Canadian picture, framed as a health issue."
++      - title: "Older adults are uniquely impacted by the climate crisis"
++        url: "https://www.climaterealityproject.org/blog/older-adults-are-uniquely-impacted-climate-crisis-heres-why"
++        publisher: "The Climate Reality Project"
++        description: "A plain explanation of the particular risks older people face."
++      - title: "Older people and climate action"
++        url: "https://unfccc.int/sites/default/files/resource/OlderPeople_inClimateAction_briefing_18032021.pdf"
++        publisher: "United Nations"
++        format: "PDF"
++        description: "A briefing on the role older people play in climate action worldwide."
+ ---
+ 
+ Climate change reaches everyone, but it does not reach everyone equally. Heat waves, wildfire smoke, and flooding are harder on older bodies, and existing health conditions make the risk sharper still.
+ 
+ That is one reason seniors have a stake in this. The other is that we have time, experience, credibility with decision-makers, and a long view of what we are handing on. The resources here cover both sides: how to protect yourself and the people around you, and why our generation's voice matters in this fight.
+-
+-## Resources
+-
+-- [10 reasons why Seniors must step up for Climate Action](https://drive.google.com/file/d/1I0n6H4iO4Dfm5xVGy_r7-fejokdYOpPa/view?usp=drive_link) — Seniors for Climate BC (PDF) — Our own short guide to why you should get involved.
+-- [Healthy Aging in a Changing Climate](https://climatechange.pathways.med.ubc.ca/advice-from-the-experts/healthy-aging-in-a-changing-climate/) — UBC Faculty of Medicine — Expert advice on aging well as the climate shifts.
+-- [How older adults can reduce risks of climate change hazards](https://bchealthycommunities.ca/index.php/2024/04/04/how-older-adults-can-reduce-risks-of-climate-change-hazards/) — BC Healthy Communities — Why older adults are more vulnerable during extreme weather, plus BC resources for planning and preparedness.
+-- [Why climate change is a health crisis for older adults in Canada](https://entente.ca/why-climate-change-is-a-health-crisis-for-older-adults-in-canada/) — Entente Education Canada — The Canadian picture, framed as a health issue.
+-- [Older adults are uniquely impacted by the climate crisis](https://www.climaterealityproject.org/blog/older-adults-are-uniquely-impacted-climate-crisis-heres-why) — The Climate Reality Project — A plain explanation of the particular risks older people face.
+-- [Older people and climate action](https://unfccc.int/sites/default/files/resource/OlderPeople_inClimateAction_briefing_18032021.pdf) — United Nations (PDF) — A briefing on the role older people play in climate action worldwide.
+diff --git a/site/content/about/climate-solutions/index.md b/site/content/about/climate-solutions/index.md
+index 8747a5f..6d9f594 100644
+--- a/site/content/about/climate-solutions/index.md
++++ b/site/content/about/climate-solutions/index.md
+@@ -1,28 +1,49 @@
+ ---
+ title: "Climate Solutions"
+ description: "Research-based climate solutions already underway — in British Columbia, across Canada, and worldwide."
++resources:
++  - heading: "In British Columbia"
++    entries:
++      - title: "Articles and reports"
++        url: "https://climatesolutions.ca/articles-reports/"
++        publisher: "Pacific Institute for Climate Solutions, University of Victoria"
++        description: "BC-focused research on flood and fire, cost analyses, environmental impacts, and Indigenous involvement."
++      - title: "RegenerateBC"
++        url: "https://regeneratebc.org/"
++        description: "Research-based solutions to the climate crisis and ways to act on them in BC."
++  - heading: "Your own community"
++    intro:
++      - "Visit your city or town's website and look for its climate plan. A few strong examples:"
++    entries:
++      - title: "Climate Emergency Action Plan"
++        url: "https://vancouver.ca/green-vancouver/vancouvers-climate-emergency.aspx"
++        publisher: "City of Vancouver"
++      - title: "Saanich Climate Plan"
++        url: "https://www.saanich.ca/EN/main/community/sustainable-saanich/saanich-climate-plan.html"
++        publisher: "District of Saanich"
++      - title: "Green Initiatives"
++        url: "https://www.nanaimo.ca/green-initiatives"
++        publisher: "City of Nanaimo"
++  - heading: "Across Canada and the world"
++    entries:
++      - title: "Climate Solutions"
++        url: "https://davidsuzuki.org/our-work/climate-solutions/"
++        publisher: "David Suzuki Foundation"
++        description: "An assessment of Canada's climate goals, plans, and problems, including who the major polluters are."
++      - title: "Katharine Hayhoe at the Calgary Climate Summit, 2025"
++        url: "https://www.youtube.com/watch?v=1PisU-yTXLo"
++        publisher: "YouTube"
++        format: "Video"
++        description: "A keynote on how today's choices can benefit people, industry, and the planet at once. Her argument: hope is not the absence of fear, it is the courage to act together."
++      - title: "Climate Solutions"
++        url: "https://www.worldenvironmentday.global/2026/latest/climate-solutions"
++        publisher: "UN Environment Programme"
++        description: "Ideas for individuals, companies, and governments to tackle climate change."
++      - title: "Project Drawdown"
++        url: "https://drawdown.org"
++        description: "A leading guide to science-based climate solutions, with current news and analysis."
+ ---
+ 
+ The last decade has changed what is possible. Solutions that were theoretical are now being built, costed, and measured — including here in British Columbia.
+ 
+ This page is about what is working. Some of it is provincial research, some of it is your own municipality's climate plan, and some of it is the global picture. It is a good antidote to the feeling that nothing is being done.
+-
+-## In British Columbia
+-
+-- [Articles and reports](https://climatesolutions.ca/articles-reports/) — Pacific Institute for Climate Solutions, University of Victoria — BC-focused research on flood and fire, cost analyses, environmental impacts, and Indigenous involvement.
+-- [RegenerateBC](https://regeneratebc.org/) — Research-based solutions to the climate crisis and ways to act on them in BC.
+-
+-## Your own community
+-
+-Visit your city or town's website and look for its climate plan. A few strong examples:
+-
+-- [Climate Emergency Action Plan](https://vancouver.ca/green-vancouver/vancouvers-climate-emergency.aspx) — City of Vancouver
+-- [Saanich Climate Plan](https://www.saanich.ca/EN/main/community/sustainable-saanich/saanich-climate-plan.html) — District of Saanich
+-- [Green Initiatives](https://www.nanaimo.ca/green-initiatives) — City of Nanaimo
+-
+-## Across Canada and the world
+-
+-- [Climate Solutions](https://davidsuzuki.org/our-work/climate-solutions/) — David Suzuki Foundation — An assessment of Canada's climate goals, plans, and problems, including who the major polluters are.
+-- [Katharine Hayhoe at the Calgary Climate Summit, 2025](https://www.youtube.com/watch?v=1PisU-yTXLo) — YouTube — A keynote on how today's choices can benefit people, industry, and the planet at once. Her argument: hope is not the absence of fear, it is the courage to act together.
+-- [Climate Solutions](https://www.worldenvironmentday.global/2026/latest/climate-solutions) — UN Environment Programme — Ideas for individuals, companies, and governments to tackle climate change.
+-- [Project Drawdown](https://drawdown.org) — A leading guide to science-based climate solutions, with current news and analysis.
+diff --git a/site/content/about/what-is-climate-change/index.md b/site/content/about/what-is-climate-change/index.md
+index d46d7ae..817950a 100644
+--- a/site/content/about/what-is-climate-change/index.md
++++ b/site/content/about/what-is-climate-change/index.md
+@@ -1,18 +1,40 @@
+ ---
+ title: "What Is Climate Change and How Did We Get Here?"
+ description: "Clear, reliable explanations of what climate change is, how we got here, and how to spot misinformation."
++resources:
++  - heading: "Resources"
++    entries:
++      - title: "What is climate change?"
++        url: "https://davidsuzuki.org/what-you-can-do/what-is-climate-change/"
++        publisher: "David Suzuki Foundation"
++        description: "A thorough overview of climate change and of the two ways we respond to it: mitigation and adaptation."
++      - title: "Weathered video series"
++        url: "https://www.youtube.com/watch?v=M4pSD1D1JMo"
++        publisher: "YouTube"
++        format: "Video"
++        description: "A current, well-made video series on what climate change is and how we got here."
++      - title: "Causes and Effects of Climate Change"
++        url: "https://www.un.org/en/climatechange/science/causes-effects-climate-change"
++        publisher: "United Nations"
++        description: "A clear, plain-language summary of the science."
++      - title: "British National Emergency Briefing — Climate Change"
++        url: "https://www.patreon.com/posts/complete-change-144741531"
++        description: "A 25-minute video summary of the briefing delivered to the British Government on the scale of the climate emergency."
++      - title: "British National Emergency Briefing — full series"
++        url: "https://www.youtube.com/watch?v=lpLxLp4j07Y&list=PL6b0HBZ3v-IkuFdfsieHeQVvo2rDWoADE&index=1"
++        publisher: "YouTube"
++        format: "Video"
++        description: "The long version: ten presenters, ten videos, five to fifteen minutes each."
++      - title: "More about the National Emergency Briefing"
++        url: "https://www.wedonthavetime.org/events/national-emergency-briefing"
++        publisher: "We Don't Have Time"
++        description: "Background on the briefing and the people behind it."
++      - title: "Climate Change Articles"
++        url: "http://snopes.com"
++        publisher: "Snopes"
++        description: "A reliable place to check and debunk common climate misinformation."
+ ---
+ 
+ Most of us know the broad outline: emissions have been climbing since the Industrial Revolution. But the details matter, and they have a way of getting muddled — especially when misinformation is circulating.
+ 
+ These are the explanations we return to. Some are quick reads, some are video series you can work through over a few evenings. All of them come from sources that show their evidence.
+-
+-## Resources
+-
+-- [What is climate change?](https://davidsuzuki.org/what-you-can-do/what-is-climate-change/) — David Suzuki Foundation — A thorough overview of climate change and of the two ways we respond to it: mitigation and adaptation.
+-- [Weathered video series](https://www.youtube.com/watch?v=M4pSD1D1JMo) — YouTube — A current, well-made video series on what climate change is and how we got here.
+-- [Causes and Effects of Climate Change](https://www.un.org/en/climatechange/science/causes-effects-climate-change) — United Nations — A clear, plain-language summary of the science.
+-- [British National Emergency Briefing — Climate Change](https://www.patreon.com/posts/complete-change-144741531) — A 25-minute video summary of the briefing delivered to the British Government on the scale of the climate emergency.
+-- [British National Emergency Briefing — full series](https://www.youtube.com/watch?v=lpLxLp4j07Y&list=PL6b0HBZ3v-IkuFdfsieHeQVvo2rDWoADE&index=1) — YouTube — The long version: ten presenters, ten videos, five to fifteen minutes each.
+-- [More about the National Emergency Briefing](https://www.wedonthavetime.org/events/national-emergency-briefing) — We Don't Have Time — Background on the briefing and the people behind it.
+-- [Climate Change Articles](http://snopes.com) — Snopes — A reliable place to check and debunk common climate misinformation.
+diff --git a/site/content/news/_index.md b/site/content/news/_index.md
+index 2fc2105..83e5f01 100644
+--- a/site/content/news/_index.md
++++ b/site/content/news/_index.md
+@@ -1,22 +1,32 @@
+ ---
+ title: "News"
+ description: "Climate news, events, campaigns, and progress reports from across British Columbia."
++resources:
++  - heading: "Networks and events"
++    entries:
++      - title: "West Coast Climate Action Network (WE-CAN)"
++        url: "https://westcoastclimateaction.ca/we-can-news/"
++        description: "Brings climate activists together, lobbies elected leaders, and runs webinars and working groups."
++      - title: "Events and webinars"
++        url: "https://creativelyunited.org/events/"
++        publisher: "Creatively United"
++        description: "Event postings and webinars across BC. Anyone can [add an event to their calendar](https://creativelyunited.org/events/community/add)."
++  - heading: "How BC is doing"
++    groups:
++      - heading: "2025 BC Climate Action Report"
++        intro:
++          - "In January 2026, the BC Climate Emergency Campaign released its progress report on the ten urgent actions the province should be taking. The BC government received eight \"FAIL\" grades and two \"Minor Progress\" scores."
++        entries:
++          - title: "2025 Climate Progress Report"
++            url: "https://bcclimateemergency.ca/progress-report"
++            publisher: "BC Climate Emergency Campaign"
++            description: "The full scorecard and the reasoning behind each grade."
++          - title: "CleanBC needs a renewal, not a retreat"
++            url: "https://vancouversun.com/opinion/op-ed/opinion-cleanbc-needs-a-renewal-not-a-retreat"
++            publisher: "Vancouver Sun"
++            description: "An op-ed published in response to the report."
+ ---
+ 
+ Climate action in British Columbia is busy, and it can be hard to keep track of. This page collects the places we go to find out what is actually going on — the networks, the event calendars, and the reports that hold our government to account.
+ 
+ If you are looking for something to attend, start with the event listings. If you want to know how BC is doing, start with the progress report.
+-
+-## Networks and events
+-
+-- [West Coast Climate Action Network (WE-CAN)](https://westcoastclimateaction.ca/we-can-news/) — Brings climate activists together, lobbies elected leaders, and runs webinars and working groups.
+-- [Events and webinars](https://creativelyunited.org/events/) — Creatively United — Event postings and webinars across BC. Anyone can [add an event to their calendar](https://creativelyunited.org/events/community/add).
+-
+-## How BC is doing
+-
+-### 2025 BC Climate Action Report
+-
+-In January 2026, the BC Climate Emergency Campaign released its progress report on the ten urgent actions the province should be taking. The BC government received eight "FAIL" grades and two "Minor Progress" scores.
+-
+-- [2025 Climate Progress Report](https://bcclimateemergency.ca/progress-report) — BC Climate Emergency Campaign — The full scorecard and the reasoning behind each grade.
+-- [CleanBC needs a renewal, not a retreat](https://vancouversun.com/opinion/op-ed/opinion-cleanbc-needs-a-renewal-not-a-retreat) — Vancouver Sun — An op-ed published in response to the report.
+diff --git a/site/content/take-action/_index.md b/site/content/take-action/_index.md
+index 19db171..3908bb4 100644
+--- a/site/content/take-action/_index.md
++++ b/site/content/take-action/_index.md
+@@ -1,6 +1,118 @@
+ ---
+ title: "Take Action"
+ description: "Practical climate actions for seniors in BC — writing letters, joining campaigns, and organizing with others."
++resources:
++  - heading: "Individual action"
++    groups:
++      - heading: "Write a letter to the editor"
++        intro:
++          - "If the media won't make the connection between fossil fuels, climate change, and the wildfires we are living through, our letters can. Both toolkits below will help you get started."
++        entries:
++          - title: "How to publish a letter to the editor in your local newspaper"
++            url: "https://sierraclub.bc.ca/local-leaders/how-to-publish-a-letter-to-the-editor-in-your-local-newspaper/?mkt_tok=Nzg4LVlCRi0yOTYAAAGjkQv6deQZ7sAbuPuaEF0QflXJ9IAa24wH8WbWRycU6_am821OF_IKKu_ZZrqcOJuUhDai1qt7IccrLLslJFQSsnVn4bbXDlny-z_8WVNR"
++            publisher: "Sierra Club BC"
++            description: "A step-by-step toolkit for getting a climate letter into your local paper."
++          - title: "Letter to the editor toolkit"
++            url: "https://docs.google.com/document/d/1TR_bRIk4Pr0oUkuAncmmRVHyMytne0UarMGJyHNRwF4/edit?tab=t.0#heading=h.vn4ozv38wsd2"
++            publisher: "350.org"
++            description: "Multiple sample letters you can adapt."
++      - heading: "Write to an elected official"
++        entries:
++          - title: "Template to write a letter to an elected official"
++            url: "https://drive.google.com/file/d/1uAYHGS4aqKRVFyK_14xgcK9qGfSnwKiF/view?usp=drive_link"
++            publisher: "Seniors for Climate BC"
++            format: "PDF"
++            description: "A ready-to-use starting point."
++          - title: "Tips on how to write a general letter to BC MLAs or MPs, 2026"
++            url: "https://drive.google.com/file/d/1fIi1dMNS2HCV4Q4EZ1WiDYsfE4UlPC0g/view?usp=drive_link"
++            publisher: "Seniors for Climate BC"
++            format: "PDF"
++            description: "What makes a letter to an MLA or MP actually land."
++      - heading: "At home and in your community"
++        entries:
++          - title: "Thrifting is Smart, Cost Effective and Trendy"
++            url: "https://drive.google.com/file/d/1IUV3WeY0Yo8KKieFGAY8XWw8xBjXt9R9/view?usp=drive_link"
++            publisher: "Seniors for Climate BC"
++            format: "PDF"
++            description: "How second-hand shopping helps the planet, and ways to re-purpose clothing you already own."
++          - title: "Extreme Weather Health Brochure"
++            url: "https://drive.google.com/file/d/1zOM6D68vvdHSqJOvIiezEXp8dpR6m7MW/view?usp=drive_link"
++            publisher: "Seniors for Climate BC"
++            format: "PDF"
++            description: "What to do during wildfires and flooding, and how to think about food security."
++          - title: "Take Action"
++            url: "https://www.firstthingsfirstokanagan.com/takeaction"
++            publisher: "First Things First Okanagan"
++            description: "Reducing your impact at home, from electrifying lawn equipment to cutting clothing waste."
++          - title: "Invest in climate solutions"
++            url: "https://myseatosky.org/take-action/invest-in-climate-solutions/"
++            publisher: "My Sea to Sky"
++            description: "A range of climate actions to choose from."
++          - title: "Actions for a healthy planet"
++            url: "https://www.un.org/en/actnow/ten-actions"
++            publisher: "United Nations"
++            description: "Ten ways to reduce your environmental impact."
++      - heading: "Campaigns you can join"
++        entries:
++          - title: "Protect Our Winters (POW) — Take Action"
++            url: "https://www.protectourwinters.ca/campaigns"
++            description: "Founded by snowboarder Jeremy Jones and now active in 15 countries including Canada. Two days before the Milan-Cortina Winter Olympics, Norwegian skier and filmmaker Nikolai Schirmer hand-delivered a \"Ski Fossil Free\" petition with more than 21,000 signatures to the IOC's head of sustainability, calling for a report on the ethical, environmental, and health implications of fossil fuel sponsorship in winter sports."
++          - title: "Who Sucks"
++            url: "https://whosucks.ca/"
++            publisher: "Code Blue BC"
++            description: "A campaign about industrial use and abuse of BC's fresh water. The largest and most profitable corporations in the province pay a fraction of a penny per litre for billions of litres of water."
++            children:
++              - title: "A short (and funny) video"
++                url: "https://www.youtube.com/watch?v=zFcEIyIP958"
++                publisher: "YouTube"
++                format: "Video"
++                description: "The quickest way to understand the campaign."
++              - title: "Letterwriter tool"
++                url: "https://www.codebluebc.ca/letterwriter"
++                publisher: "Code Blue BC"
++                description: "Write to the BC government in a few minutes."
++              - title: "Modernizing Industrial Water Rates in BC, October 2025"
++                url: "https://watershedsecurity.ca/wp-content/uploads/2025/10/REPORT-Modernizing-Industrial-Water-Rates-in-BC-Oct-2025-1.pdf"
++                publisher: "Watershed Security"
++                format: "PDF"
++                description: "The report behind the numbers."
++  - heading: "Collective action"
++    groups:
++      - heading: "Seniors' Climate Witness"
++        intro:
++          - "Good ancestors don't build pipelines. A group from Victoria is planning a low-carbon caravan from the west coast to Ottawa, stopping along the way and picking up other witnesses as it goes. They invite every community to take part in whatever way feels right."
++          - "Seniors, people of faith, and allies are gathering in Ottawa for a week of nonviolent action calling on the federal government to stop fossil fuel expansion and protect a livable future — **September 19–26, 2026**."
++        entries:
++          - title: "Sign up to join"
++            url: "https://docs.google.com/forms/d/e/1FAIpQLSegagmChsIpTh8dV16IjfnoC_VYs-s1zFOLvyrcoXcp3FdbIQ/viewform"
++            publisher: "Seniors' Climate Witness"
++            description: "The registration form for the week in Ottawa."
++        notes:
++          - "Questions? Email [seniors.climate.witness@proton.me](mailto:seniors.climate.witness@proton.me)"
++      - heading: "Organize where you live"
++        entries:
++          - title: "Climate Cafe Support"
++            url: "https://drive.google.com/file/d/1_GHJMFpFW28wy91B6QPOXkl_PEew_M0v/view?usp=drive_link"
++            publisher: "Seniors for Climate BC"
++            format: "PDF"
++            description: "Everything you need to plan a Climate Cafe: process, guidelines, and practical steps."
++          - title: "Break through the Climate Silence in 2026"
++            url: "https://seniorsforclimate.org/campaigns/"
++            publisher: "Seniors for Climate"
++            description: "National campaigns you can take part in from anywhere in BC."
++          - title: "Take Action"
++            url: "https://davidsuzuki.org/take-action/"
++            publisher: "David Suzuki Foundation"
++            description: "Suggestions grouped three ways: act locally, act online, act now."
++      - heading: "Think bigger"
++        entries:
++          - title: "We Are Adamant"
++            url: "https://weareadamant.ca/"
++            description: "Canadian climate and economics analysis, arguing that the country is at a crossroads that will shape generations."
++          - title: "How to Start a Revolution"
++            url: "https://www.filmsforaction.org/articles/how-to-start-a-revolution-in-2026/"
++            publisher: "Films for Action"
++            description: "Films on how political change actually happens under climate collapse, democratic breakdown, and rising authoritarianism."
+ ---
+ 
+ Everyone wants to move the needle, a little or a lot. This page is for turning that into something concrete.
+@@ -8,55 +120,3 @@ Everyone wants to move the needle, a little or a lot. This page is for turning t
+ We have split it in two. **Individual action** is what you can do from your kitchen table — write a letter, change a habit, sign on to a campaign. **Collective action** is what happens when we do it together, which is usually where the real leverage is. Pick whichever fits the week you are having.
+ 
+ Two things deserve their own page, and you will find them in the menu: [meeting with your elected officials](/take-action/meet-your-elected-officials/), which is one of the most effective things a senior can do, and [joining us](/take-action/join-us/), which is how most of this actually gets done.
+-
+-## Individual action
+-
+-### Write a letter to the editor
+-
+-If the media won't make the connection between fossil fuels, climate change, and the wildfires we are living through, our letters can. Both toolkits below will help you get started.
+-
+-- [How to publish a letter to the editor in your local newspaper](https://sierraclub.bc.ca/local-leaders/how-to-publish-a-letter-to-the-editor-in-your-local-newspaper/?mkt_tok=Nzg4LVlCRi0yOTYAAAGjkQv6deQZ7sAbuPuaEF0QflXJ9IAa24wH8WbWRycU6_am821OF_IKKu_ZZrqcOJuUhDai1qt7IccrLLslJFQSsnVn4bbXDlny-z_8WVNR) — Sierra Club BC — A step-by-step toolkit for getting a climate letter into your local paper.
+-- [Letter to the editor toolkit](https://docs.google.com/document/d/1TR_bRIk4Pr0oUkuAncmmRVHyMytne0UarMGJyHNRwF4/edit?tab=t.0#heading=h.vn4ozv38wsd2) — 350.org — Multiple sample letters you can adapt.
+-
+-### Write to an elected official
+-
+-- [Template to write a letter to an elected official](https://drive.google.com/file/d/1uAYHGS4aqKRVFyK_14xgcK9qGfSnwKiF/view?usp=drive_link) — Seniors for Climate BC (PDF) — A ready-to-use starting point.
+-- [Tips on how to write a general letter to BC MLAs or MPs, 2026](https://drive.google.com/file/d/1fIi1dMNS2HCV4Q4EZ1WiDYsfE4UlPC0g/view?usp=drive_link) — Seniors for Climate BC (PDF) — What makes a letter to an MLA or MP actually land.
+-
+-### At home and in your community
+-
+-- [Thrifting is Smart, Cost Effective and Trendy](https://drive.google.com/file/d/1IUV3WeY0Yo8KKieFGAY8XWw8xBjXt9R9/view?usp=drive_link) — Seniors for Climate BC (PDF) — How second-hand shopping helps the planet, and ways to re-purpose clothing you already own.
+-- [Extreme Weather Health Brochure](https://drive.google.com/file/d/1zOM6D68vvdHSqJOvIiezEXp8dpR6m7MW/view?usp=drive_link) — Seniors for Climate BC (PDF) — What to do during wildfires and flooding, and how to think about food security.
+-- [Take Action](https://www.firstthingsfirstokanagan.com/takeaction) — First Things First Okanagan — Reducing your impact at home, from electrifying lawn equipment to cutting clothing waste.
+-- [Invest in climate solutions](https://myseatosky.org/take-action/invest-in-climate-solutions/) — My Sea to Sky — A range of climate actions to choose from.
+-- [Actions for a healthy planet](https://www.un.org/en/actnow/ten-actions) — United Nations — Ten ways to reduce your environmental impact.
+-
+-### Campaigns you can join
+-
+-- [Protect Our Winters (POW) — Take Action](https://www.protectourwinters.ca/campaigns) — Founded by snowboarder Jeremy Jones and now active in 15 countries including Canada. Two days before the Milan-Cortina Winter Olympics, Norwegian skier and filmmaker Nikolai Schirmer hand-delivered a "Ski Fossil Free" petition with more than 21,000 signatures to the IOC's head of sustainability, calling for a report on the ethical, environmental, and health implications of fossil fuel sponsorship in winter sports.
+-- [Who Sucks](https://whosucks.ca/) — Code Blue BC — A campaign about industrial use and abuse of BC's fresh water. The largest and most profitable corporations in the province pay a fraction of a penny per litre for billions of litres of water.
+-  - [A short (and funny) video](https://www.youtube.com/watch?v=zFcEIyIP958) — YouTube — The quickest way to understand the campaign.
+-  - [Letterwriter tool](https://www.codebluebc.ca/letterwriter) — Code Blue BC — Write to the BC government in a few minutes.
+-  - [Modernizing Industrial Water Rates in BC, October 2025](https://watershedsecurity.ca/wp-content/uploads/2025/10/REPORT-Modernizing-Industrial-Water-Rates-in-BC-Oct-2025-1.pdf) — Watershed Security (PDF) — The report behind the numbers.
+-
+-## Collective action
+-
+-### Seniors' Climate Witness
+-
+-Good ancestors don't build pipelines. A group from Victoria is planning a low-carbon caravan from the west coast to Ottawa, stopping along the way and picking up other witnesses as it goes. They invite every community to take part in whatever way feels right.
+-
+-Seniors, people of faith, and allies are gathering in Ottawa for a week of nonviolent action calling on the federal government to stop fossil fuel expansion and protect a livable future — **September 19–26, 2026**.
+-
+-- [Sign up to join](https://docs.google.com/forms/d/e/1FAIpQLSegagmChsIpTh8dV16IjfnoC_VYs-s1zFOLvyrcoXcp3FdbIQ/viewform) — Seniors' Climate Witness — The registration form for the week in Ottawa.
+-- Questions? Email [seniors.climate.witness@proton.me](mailto:seniors.climate.witness@proton.me)
+-
+-### Organize where you live
+-
+-- [Climate Cafe Support](https://drive.google.com/file/d/1_GHJMFpFW28wy91B6QPOXkl_PEew_M0v/view?usp=drive_link) — Seniors for Climate BC (PDF) — Everything you need to plan a Climate Cafe: process, guidelines, and practical steps.
+-- [Break through the Climate Silence in 2026](https://seniorsforclimate.org/campaigns/) — Seniors for Climate — National campaigns you can take part in from anywhere in BC.
+-- [Take Action](https://davidsuzuki.org/take-action/) — David Suzuki Foundation — Suggestions grouped three ways: act locally, act online, act now.
+-
+-### Think bigger
+-
+-- [We Are Adamant](https://weareadamant.ca/) — Canadian climate and economics analysis, arguing that the country is at a crossroads that will shape generations.
+-- [How to Start a Revolution](https://www.filmsforaction.org/articles/how-to-start-a-revolution-in-2026/) — Films for Action — Films on how political change actually happens under climate collapse, democratic breakdown, and rising authoritarianism.
+diff --git a/site/content/take-action/join-us/index.md b/site/content/take-action/join-us/index.md
+index 21e80ec..6a2ddf9 100644
+--- a/site/content/take-action/join-us/index.md
++++ b/site/content/take-action/join-us/index.md
+@@ -3,9 +3,7 @@ title: "Join Us"
+ description: "Volunteer with Seniors for Climate in British Columbia — join our monthly online meetings and help build climate action across the province."
+ ---
+ 
+-### There is room here for you.
+-
+-However much time you have, and whatever you are good at.
++There is room here for you — however much time you have, and whatever you are good at.
+ 
+ ## What this looks like
+ 
+@@ -27,4 +25,4 @@ The simplest first step is to come to a meeting. We meet online once a month, an
+ 
+ Email us at [bc-hub@seniorsforclimate.org](mailto:bc-hub@seniorsforclimate.org) and we will send you the details.
+ 
+-<a href="mailto:bc-hub@seniorsforclimate.org" class="btn-donate dib mt2">Email us to join</a>
++<a href="mailto:bc-hub@seniorsforclimate.org" class="btn">Email us to join</a>
+diff --git a/site/content/take-action/meet-your-elected-officials/index.md b/site/content/take-action/meet-your-elected-officials/index.md
+index d53a20c..45aa316 100644
+--- a/site/content/take-action/meet-your-elected-officials/index.md
++++ b/site/content/take-action/meet-your-elected-officials/index.md
+@@ -1,13 +1,21 @@
+ ---
+ title: "Meet With Your Elected Officials"
+ description: "A how-to guide for organizing, preparing for, and holding a climate meeting with your MP or MLA."
++resources:
++  - heading: "Resources"
++    entries:
++      - title: "Meeting with your Member of Parliament — toolkit"
++        url: "https://seniorsforclimate.org/meeting-with-your-member-of-parliament/"
++        publisher: "Seniors for Climate"
++        description: "How to organize, prepare for, and attend a meeting with your MP."
++      - title: "Training video: meeting with elected leaders"
++        url: "https://youtu.be/FBYnfo-BHD4?si=5CrzOLzI9kg1eB02"
++        publisher: "YouTube"
++        date: "November 2025"
++        format: "Video"
++        description: "Laura Sacks (West Kootenay Climate Hub) and Lori Goldman (First Things First Okanagan) walk through what works."
+ ---
+ 
+ Meeting your MP or MLA is one of the most effective things you can do, and one of the least mysterious once you have done it once. They are obliged to hear from constituents. Seniors, in particular, tend to get through the door.
+ 
+ The two resources below take you from the first request through to the meeting itself: how to organize a small group, what to prepare, and how to make your fifteen minutes count.
+-
+-## Resources
+-
+-- [Meeting with your Member of Parliament — toolkit](https://seniorsforclimate.org/meeting-with-your-member-of-parliament/) — Seniors for Climate — How to organize, prepare for, and attend a meeting with your MP.
+-- [Training video: meeting with elected leaders](https://youtu.be/FBYnfo-BHD4?si=5CrzOLzI9kg1eB02) — YouTube, November 2025 — Laura Sacks (West Kootenay Climate Hub) and Lori Goldman (First Things First Okanagan) walk through what works.
+diff --git a/site/layouts/_default/baseof.html b/site/layouts/_default/baseof.html
+index 34f7dc2..44a201f 100644
+--- a/site/layouts/_default/baseof.html
++++ b/site/layouts/_default/baseof.html
+@@ -1,11 +1,13 @@
+ <!doctype html>
+ <html lang="{{ $.Site.Language.Lang }}">
+   {{ partial "head" . }}
+-  <body class="sans-serif">
++  <body>
+ 
+     {{ block "header" . }}{{ partial "nav" . }}{{end}}
+ 
+-    {{ block "main" . }}{{ end }}
++    <main id="main">
++      {{ block "main" . }}{{ end }}
++    </main>
+ 
+     {{ block "footer" . }}{{ partial "footer" . }}{{end}}
+ 
+diff --git a/site/layouts/_default/list.html b/site/layouts/_default/list.html
+index 1b7e4fb..5aaa459 100644
+--- a/site/layouts/_default/list.html
++++ b/site/layouts/_default/list.html
+@@ -1,8 +1,19 @@
+ {{ define "main" }}
+ 
+-<div class="mw7 center ph3 pt5 pb5">
+-  <h1 class="f1 lh-title mb3">{{ .Title }}</h1>
+-  {{ .Content }}
+-</div>
++{{ partial "page-head" . }}
++
++{{ with .Content }}
++	<div class="page-intro">
++		<div class="wrap">
++			<div class="prose">{{ . }}</div>
++		</div>
++	</div>
++{{ end }}
++
++{{ if .Params.resources }}
++	{{ partial "resources" . }}
++{{ else }}
++	<div style="padding-bottom:4rem"></div>
++{{ end }}
+ 
+ {{ end }}
+diff --git a/site/layouts/_default/single.html b/site/layouts/_default/single.html
+index 1b7e4fb..5aaa459 100755
+--- a/site/layouts/_default/single.html
++++ b/site/layouts/_default/single.html
+@@ -1,8 +1,19 @@
+ {{ define "main" }}
+ 
+-<div class="mw7 center ph3 pt5 pb5">
+-  <h1 class="f1 lh-title mb3">{{ .Title }}</h1>
+-  {{ .Content }}
+-</div>
++{{ partial "page-head" . }}
++
++{{ with .Content }}
++	<div class="page-intro">
++		<div class="wrap">
++			<div class="prose">{{ . }}</div>
++		</div>
++	</div>
++{{ end }}
++
++{{ if .Params.resources }}
++	{{ partial "resources" . }}
++{{ else }}
++	<div style="padding-bottom:4rem"></div>
++{{ end }}
+ 
+ {{ end }}
+diff --git a/site/layouts/index.html b/site/layouts/index.html
+index 80ff1fa..4933b0f 100644
+--- a/site/layouts/index.html
++++ b/site/layouts/index.html
+@@ -1,68 +1,66 @@
+ {{ define "main" }}
+ 
+-<!-- Hero -->
+-<div class="bg-off-white ph3">
+-  <div class="mw7 center pv5 tc">
+-    <h1 class="f1 lh-title mb3">{{ .Params.hero.headline }}</h1>
+-    <p class="f3 lh-copy grey-3 mb4">{{ .Params.hero.subhead }}</p>
+-    <div>
+-      {{ with .Params.hero.primary_cta }}
+-        <a href="{{ .link }}" class="btn-donate dib mr3">{{ .text }}</a>
+-      {{ end }}
+-      {{ with .Params.hero.secondary_cta }}
+-        <a href="{{ .link }}" class="btn dib">{{ .text }}</a>
+-      {{ end }}
+-    </div>
+-  </div>
+-</div>
++<section class="hero">
++	<div class="wrap">
++		<h1>{{ .Params.hero.headline }}</h1>
++		<p>{{ .Params.hero.subhead }}</p>
++		<div class="hero-actions">
++			{{ with .Params.hero.primary_cta }}
++				<a href="{{ .link }}" class="btn">{{ .text }}</a>
++			{{ end }}
++			{{ with .Params.hero.secondary_cta }}
++				<a href="{{ .link }}" class="btn btn-quiet">{{ .text }}</a>
++			{{ end }}
++		</div>
++	</div>
++</section>
+ 
+-<!-- Who we are -->
+-<div class="mw7 center ph3 pv5">
+-  <h2 class="f2 lh-title mb3">Who we are</h2>
+-  {{ range .Params.who_we_are.paragraphs }}
+-    <p class="lh-copy mb3">{{ . }}</p>
+-  {{ end }}
+-  {{ with .Params.who_we_are.link }}
+-    <a href="{{ .link }}" class="b no-underline primary">{{ .text }} →</a>
+-  {{ end }}
+-</div>
++<section class="section">
++	<div class="wrap">
++		<h2>Who we are</h2>
++		{{ range .Params.who_we_are.paragraphs }}
++			<p>{{ . }}</p>
++		{{ end }}
++		{{ with .Params.who_we_are.link }}
++			<p><a class="inline-link" href="{{ .link }}">{{ .text }}</a></p>
++		{{ end }}
++	</div>
++</section>
+ 
+-<!-- Get involved -->
+-<div class="bg-off-white ph3">
+-  <div class="mw7 center pv5">
+-    <h2 class="f2 lh-title mb3">Get involved</h2>
+-    <p class="lh-copy mb3">{{ .Params.get_involved.text }}</p>
+-    <ul class="lh-copy mb4">
+-      {{ range .Params.get_involved.bullets }}
+-        <li class="mb2">{{ . | safeHTML }}</li>
+-      {{ end }}
+-    </ul>
+-    {{ with .Params.get_involved.cta }}
+-      <a href="{{ .link }}" class="btn-donate dib">{{ .text }}</a>
+-    {{ end }}
+-  </div>
+-</div>
++<section class="section section-band">
++	<div class="wrap">
++		<h2>Get involved</h2>
++		<p>{{ .Params.get_involved.text }}</p>
++		<ul>
++			{{ range .Params.get_involved.bullets }}
++				<li>{{ . | safeHTML }}</li>
++			{{ end }}
++		</ul>
++		{{ with .Params.get_involved.cta }}
++			<p style="margin-top:1.5rem"><a href="{{ .link }}" class="btn">{{ .text }}</a></p>
++		{{ end }}
++	</div>
++</section>
+ 
+-<!-- Learn more, do more -->
+-<div class="mw8 center ph3 pv5">
+-  <h2 class="f2 lh-title mb3 tc">{{ .Params.learn_more.heading }}</h2>
+-  <p class="lh-copy mb4 tc mw6 center">{{ .Params.learn_more.intro }}</p>
++<section class="section">
++	<div class="wrap">
++		<h2>{{ .Params.learn_more.heading }}</h2>
++		<p>{{ .Params.learn_more.intro }}</p>
+ 
+-  {{ range .Params.learn_more.groups }}
+-    <h3 class="f4 b lh-title mb3 mt4">{{ .heading }}</h3>
+-    <ul class="flex-ns flex-wrap mhn2-ns list pl0">
+-      {{ range .items }}
+-        <li class="w-50-ns ph2-ns mb3">
+-          <a href="{{ .link }}" class="no-underline">
+-            <div class="pa3 h-100 bg-off-white br2">
+-              <h4 class="f5 b lh-title mb2 primary">{{ .title }}</h4>
+-              <p class="lh-copy grey-3 ma0">{{ .text }}</p>
+-            </div>
+-          </a>
+-        </li>
+-      {{ end }}
+-    </ul>
+-  {{ end }}
+-</div>
++		<div class="directory">
++			{{ range .Params.learn_more.groups }}
++				<div class="dir-group">
++					<h3>{{ .heading }}</h3>
++					{{ range .items }}
++						<a class="dir-row" href="{{ .link }}">
++							<span class="dir-title">{{ .title }}</span>
++							<p class="dir-desc">{{ .text }}</p>
++						</a>
++					{{ end }}
++				</div>
++			{{ end }}
++		</div>
++	</div>
++</section>
+ 
+ {{ end }}
+diff --git a/site/layouts/partials/footer.html b/site/layouts/partials/footer.html
+index 846e8c2..d457afd 100644
+--- a/site/layouts/partials/footer.html
++++ b/site/layouts/partials/footer.html
+@@ -1,32 +1,30 @@
+-<footer class="bg-black ph3 pv4 white">
++<footer class="site-footer">
++	<div class="wrap">
++		<div class="footer-cols">
+ 
+-	<div class="mw7 center pt3">
+-
+-		<div class="flex-ns justify-between">
+-
+-			<div class="mb3">
+-				<h3 class="f4 b lh-title mb1 primary">Seniors for Climate</h3>
+-				<p class="ma0">British Columbia</p>
++			<div class="footer-brand">
++				<h3>Seniors for Climate</h3>
++				<span>British Columbia</span>
+ 			</div>
+ 
+-			<div class="mb3">
+-				<h3 class="f4 b lh-title mb1 primary">Quick links</h3>
+-				<ul class="mb3 list pl0">
+-					<li><a href="/" class="link">Home</a></li>
+-					<li><a href="/about/" class="link">About Us</a></li>
+-					<li><a href="/take-action/" class="link">Take Action</a></li>
+-					<li><a href="/news/" class="link">News</a></li>
+-					<li><a href="/contact/" class="link">Contact Us</a></li>
+-					<li><a href="/donate/" class="link">Donate</a></li>
++			<div>
++				<h3>Quick links</h3>
++				<ul>
++					<li><a href="/">Home</a></li>
++					<li><a href="/about/">About Us</a></li>
++					<li><a href="/take-action/">Take Action</a></li>
++					<li><a href="/news/">News</a></li>
++					<li><a href="/contact/">Contact Us</a></li>
++					<li><a href="/donate/">Donate</a></li>
+ 				</ul>
+ 			</div>
+ 
+-			<div class="mb3">
+-				<h3 class="f4 b lh-title mb1 primary">Get in touch</h3>
+-				<p class="ma0"><a href="mailto:bc-hub@seniorsforclimate.org" class="link">bc-hub@seniorsforclimate.org</a></p>
++			<div>
++				<h3>Get in touch</h3>
++				<p><a href="mailto:bc-hub@seniorsforclimate.org">bc-hub@seniorsforclimate.org</a></p>
++				<p>We meet online once a month. Everyone is welcome.</p>
+ 			</div>
+ 
+ 		</div>
+ 	</div>
+-
+ </footer>
+diff --git a/site/layouts/partials/head.html b/site/layouts/partials/head.html
+index afce20b..b05c5e1 100644
+--- a/site/layouts/partials/head.html
++++ b/site/layouts/partials/head.html
+@@ -17,15 +17,20 @@
+   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+   <base href="{{ $.Site.BaseURL }}">
+ 
+-	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
++	<!-- Source Serif 4 for headings and resource titles, Public Sans for
++	     body and interface. Both have large x-heights and hold up at the
++	     20px base size this site reads at. -->
++	<link rel="preconnect" href="https://fonts.googleapis.com">
++	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
++	<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+ 
+ 	<!-- Favicons -->
+ 	<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+ 	<link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+ 	<link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+ 	<link rel="manifest" href="/manifest.json">
+-	<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#ff4400">
+-	<meta name="theme-color" content="#fff">
++	<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#4E7A1E">
++	<meta name="theme-color" content="#4E7A1E">
+ 
+   <!-- Open Graph Hugo https://gohugo.io/templates/internal/#open-graph -->
+   {{ template "_internal/opengraph.html" . }}
+@@ -33,4 +38,4 @@
+   {{ if .IsHome }}
+     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+   {{ end }}
+-</head>
+\ No newline at end of file
++</head>
+diff --git a/site/layouts/partials/nav.html b/site/layouts/partials/nav.html
+index f5e7508..1e4f235 100644
+--- a/site/layouts/partials/nav.html
++++ b/site/layouts/partials/nav.html
+@@ -1,48 +1,45 @@
+-<nav data-nav class="flex justify-between items-center center bg-white divider-grey relative">
+-
+-	<!-- Logo + tagline -->
+-	<a href="/" class="pa3 mr4 flex-none flex items-center no-underline">
+-		<img src="/img/logo.png" alt="Seniors for Climate logo" class="br0 db mb0" style="height: 48px; width: auto;"/>
+-		<span class="ml3 pl3" style="border-left: 2px solid var(--grey-2);">
+-			<span class="db f6 ttu b tracked grey-3">British</span>
+-			<span class="db f6 ttu b tracked grey-3">Columbia</span>
+-		</span>
+-	</a>
+-
+-	<!-- Primary Nav -->
+-	<div data-mobile-menu class="mobile-menu-container">
+-		<svg viewBox="0 0 100 80" width="40" height="25" class="mobile-menu-icon">
+-			<rect class="menu-icon-top mobile-menu-inner" width="100" height="8"></rect>
+-			<rect class="menu-icon-middle mobile-menu-inner" y="30" width="100" height="8"></rect>
+-			<rect class="menu-icon-bottom mobile-menu-inner" y="60" width="100" height="8"></rect>
+-		</svg>
+-	</div>
+-
+-	<ul class="flex items-center b nav-menu">
+-		<li class="has-dropdown">
+-			<a href="/about/" class="pa3 no-underline db primary">About Us</a>
+-			<ul class="dropdown-menu">
+-				<li><a href="/about/canadians-thoughts-on-climate-change/" class="pa2 no-underline db">Canadians' Thoughts on Climate Change</a></li>
+-				<li><a href="/about/what-is-climate-change/" class="pa2 no-underline db">What Is Climate Change?</a></li>
+-				<li><a href="/about/climate-change-and-seniors/" class="pa2 no-underline db">Climate Change and Seniors</a></li>
+-				<li><a href="/about/climate-solutions/" class="pa2 no-underline db">Climate Solutions</a></li>
++<a class="skip-link" href="#main">Skip to content</a>
++
++<header class="masthead">
++	<div class="masthead-inner">
++
++		<a class="brand" href="/">
++			<img src="/img/logo.png" alt="Seniors for Climate">
++			<span class="brand-region">British<br>Columbia</span>
++		</a>
++
++		<button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
++			<span class="nav-toggle-bars" aria-hidden="true"></span>
++			Menu
++		</button>
++
++		<nav class="nav" aria-label="Main">
++			<ul id="nav-menu">
++				<li class="has-sub">
++					<a href="/about/">About Us</a>
++					<ul class="sub">
++						<li><a href="/about/canadians-thoughts-on-climate-change/">Canadians' Thoughts on Climate Change</a></li>
++						<li><a href="/about/what-is-climate-change/">What Is Climate Change and How Did We Get Here?</a></li>
++						<li><a href="/about/climate-change-and-seniors/">Climate Change and Seniors</a></li>
++						<li><a href="/about/climate-solutions/">Climate Solutions</a></li>
++					</ul>
++				</li>
++
++				<li class="has-sub">
++					<a href="/take-action/">Take Action</a>
++					<ul class="sub">
++						<li><a href="/take-action/meet-your-elected-officials/">Meet With Your Elected Officials</a></li>
++						<li><a href="/take-action/join-us/">Join Us</a></li>
++					</ul>
++				</li>
++
++				<li><a href="/news/">News</a></li>
++				<li><a href="/contact/">Contact</a></li>
++
++				<li><a class="btn btn-quiet" href="/take-action/join-us/">Join us</a></li>
++				<li><a class="btn" href="/donate/">Donate</a></li>
+ 			</ul>
+-		</li>
+-
+-		<li class="has-dropdown">
+-			<a href="/take-action/" class="pa3 no-underline db primary">Take Action</a>
+-			<ul class="dropdown-menu">
+-				<li><a href="/take-action/meet-your-elected-officials/" class="pa2 no-underline db">Meet With Your Elected Officials</a></li>
+-			</ul>
+-		</li>
+-
+-		<li><a href="/news/" class="pa3 no-underline db primary">News</a></li>
++		</nav>
+ 
+-		<li><a href="/contact/" class="pa3 no-underline db primary">Contact Us</a></li>
+-
+-		<li class="pl2"><a href="/take-action/join-us/" class="btn ttu">Join Us</a></li>
+-
+-		<li class="pl2 pr3"><a href="/donate/" class="btn-donate ttu">Donate</a></li>
+-	</ul>
+-
+-</nav>
++	</div>
++</header>
+diff --git a/site/layouts/partials/page-head.html b/site/layouts/partials/page-head.html
+new file mode 100644
+index 0000000..0e0e185
+--- /dev/null
++++ b/site/layouts/partials/page-head.html
+@@ -0,0 +1,13 @@
++{{/* Page title with a breadcrumb back to the parent section. */}}
++<div class="page-head">
++	<div class="wrap">
++		{{ $parent := .Parent }}
++		<p class="breadcrumb">
++			<a href="/">Home</a>
++			{{ if and $parent (not $parent.IsHome) }}
++				&nbsp;&rsaquo;&nbsp; <a href="{{ $parent.RelPermalink }}">{{ $parent.Title }}</a>
++			{{ end }}
++		</p>
++		<h1>{{ .Title }}</h1>
++	</div>
++</div>
+diff --git a/site/layouts/partials/resources.html b/site/layouts/partials/resources.html
+new file mode 100644
+index 0000000..2511792
+--- /dev/null
++++ b/site/layouts/partials/resources.html
+@@ -0,0 +1,93 @@
++{{/*
++  Renders the `resources` front matter block.
++
++  Shape (two levels, both optional beyond `heading`):
++
++    resources:
++      - heading: "Section or group name"
++        intro:   ["paragraph", ...]
++        entries: [ {title, url, publisher, date, format, description, children} ]
++        notes:   ["markdown line", ...]
++        groups:  [ { same shape, one level down } ]
++
++  A block with `groups` renders as a section band; a block without
++  renders as a plain group. Descriptions run through markdownify so
++  inline links inside them survive.
++*/}}
++
++{{ define "sfc-entries" }}
++	<ul class="res-list">
++		{{ range . }}
++			<li class="entry">
++				<a class="entry-title" href="{{ .url }}">{{ .title }}</a>
++
++				{{ if or .publisher .date .format }}
++					<p class="entry-meta">
++						{{ with .publisher }}<span class="pub">{{ . }}</span>{{ end }}
++						{{ with .date }}<span>{{ . }}</span>{{ end }}
++						{{ with .format }}<span class="flag">{{ . }}</span>{{ end }}
++					</p>
++				{{ end }}
++
++				{{ with .description }}<p class="entry-desc">{{ . | markdownify }}</p>{{ end }}
++
++				{{ with .children }}
++					<ul class="entry-children">
++						{{ range . }}
++							<li>
++								<a class="entry-title" href="{{ .url }}">{{ .title }}</a>
++								{{ if or .publisher .format }}
++									<p class="entry-meta">
++										{{ with .publisher }}<span class="pub">{{ . }}</span>{{ end }}
++										{{ with .format }}<span class="flag">{{ . }}</span>{{ end }}
++									</p>
++								{{ end }}
++								{{ with .description }}<p class="entry-desc">{{ . | markdownify }}</p>{{ end }}
++							</li>
++						{{ end }}
++					</ul>
++				{{ end }}
++			</li>
++		{{ end }}
++	</ul>
++{{ end }}
++
++{{ define "sfc-group" }}
++	<section class="res-group">
++		<h2>{{ .heading }}</h2>
++
++		{{ with .intro }}
++			<div class="res-intro">
++				{{ range . }}<p>{{ . | markdownify }}</p>{{ end }}
++			</div>
++		{{ end }}
++
++		{{ with .entries }}{{ template "sfc-entries" . }}{{ end }}
++
++		{{ range .notes }}<p class="res-note">{{ . | markdownify }}</p>{{ end }}
++	</section>
++{{ end }}
++
++<div class="resources">
++	<div class="wrap">
++		{{ range .Params.resources }}
++			{{ if .groups }}
++				<section class="res-section">
++					<h2>{{ .heading }}</h2>
++
++					{{ with .intro }}
++						<div class="res-intro">
++							{{ range . }}<p>{{ . | markdownify }}</p>{{ end }}
++						</div>
++					{{ end }}
++
++					{{ with .entries }}{{ template "sfc-entries" . }}{{ end }}
++
++					{{ range .groups }}{{ template "sfc-group" . }}{{ end }}
++				</section>
++			{{ else }}
++				{{ template "sfc-group" . }}
++			{{ end }}
++		{{ end }}
++	</div>
++</div>
+diff --git a/src/css/imports/_sfc.scss b/src/css/imports/_sfc.scss
+new file mode 100644
+index 0000000..7a6b8ce
+--- /dev/null
++++ b/src/css/imports/_sfc.scss
+@@ -0,0 +1,625 @@
++/* ============================================================
++   Seniors for Climate - British Columbia
++   Component styles.
++
++   Tachyons (the rest of this folder) is a utility layer: it only
++   styles elements you attach classes to. Markdown rendered through
++   {{ .Content }} carries no classes, which is why the resource pages
++   previously fell back to browser defaults. The .prose block below
++   styles that output.
++
++   Tokens live in _variables.scss.
++   ============================================================ */
++
++*, *::before, *::after { box-sizing: border-box; }
++
++
++
++a { color: var(--blue); }
++a:hover { color: var(--blue-deep); }
++
++:focus-visible {
++  outline: 3px solid var(--focus);
++  outline-offset: 3px;
++  border-radius: 2px;
++}
++
++img { max-width: 100%; height: auto; display: block; }
++
++.wrap { max-width: var(--page); margin: 0 auto; padding: 0 1.5rem; }
++.measure { max-width: var(--measure); }
++
++/* ------------------------------------------------------------
++   Masthead
++   ------------------------------------------------------------ */
++
++.masthead {
++  border-bottom: 1px solid var(--rule);
++  background: var(--paper);
++}
++
++.masthead-inner {
++  max-width: var(--page);
++  margin: 0 auto;
++  padding: 1rem 1.5rem;
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 1.5rem;
++  flex-wrap: wrap;
++}
++
++.brand {
++  display: flex;
++  align-items: center;
++  gap: 0.9rem;
++  text-decoration: none;
++}
++
++.brand img { height: 46px; width: auto; }
++
++.brand-region {
++  font-family: var(--font-serif);
++  font-size: 1.05rem;
++  font-weight: 600;
++  color: var(--green-deep);
++  padding-left: 0.9rem;
++  border-left: 2px solid var(--rule);
++  line-height: 1.15;
++  white-space: nowrap;
++}
++
++/* ------------------------------------------------------------
++   Navigation
++   ------------------------------------------------------------ */
++
++.nav ul { list-style: none; margin: 0; padding: 0; }
++
++.nav > ul {
++  display: flex;
++  align-items: center;
++  gap: 0.25rem;
++  flex-wrap: wrap;
++}
++
++.nav a {
++  display: block;
++  padding: 0.6rem 0.7rem;
++  font-size: 0.85rem;
++  font-weight: 600;
++  color: var(--ink);
++  text-decoration: none;
++  border-radius: 3px;
++  min-height: 44px;
++  display: flex;
++  align-items: center;
++}
++
++.nav a:hover,
++.nav a[aria-current="page"] {
++  color: var(--green-deep);
++  background: var(--band);
++}
++
++.nav a[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--green); }
++
++.has-sub { position: relative; }
++
++.has-sub > a::after {
++  content: "";
++  width: 0.4em; height: 0.4em;
++  margin-left: 0.45em;
++  border-right: 2px solid currentColor;
++  border-bottom: 2px solid currentColor;
++  transform: translateY(-2px) rotate(45deg);
++}
++
++.sub {
++  position: absolute;
++  top: 100%; left: 0;
++  min-width: 20rem;
++  background: var(--paper);
++  border: 1px solid var(--rule);
++  border-top: 3px solid var(--green);
++  box-shadow: 0 8px 20px rgba(26, 29, 26, 0.13);
++  padding: 0.35rem;
++  z-index: 40;
++  display: none;
++}
++
++.has-sub:hover .sub,
++.has-sub:focus-within .sub { display: block; }
++
++.sub a { font-weight: 500; font-size: 0.8rem; white-space: normal; }
++
++/* Buttons */
++
++.btn {
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  min-height: 48px;
++  padding: 0.7rem 1.25rem;
++  font-family: var(--font-sans);
++  font-size: 0.9rem;
++  font-weight: 700;
++  text-decoration: none;
++  border-radius: 3px;
++  border: 2px solid var(--green);
++  background: var(--green);
++  color: #FFFFFF;
++  transition: background-color 120ms ease, border-color 120ms ease;
++}
++
++.btn:hover { background: var(--green-deep); border-color: var(--green-deep); color: #FFFFFF; }
++
++.btn-quiet {
++  background: transparent;
++  color: var(--green-deep);
++}
++
++.btn-quiet:hover { background: var(--band); color: var(--green-deep); border-color: var(--green-deep); }
++
++.nav .btn { padding: 0.55rem 1rem; font-size: 0.8rem; min-height: 44px; }
++
++/* ------------------------------------------------------------
++   Hero — the type is the hero
++   ------------------------------------------------------------ */
++
++.hero {
++  background: var(--band);
++  border-bottom: 1px solid var(--band-deep);
++  padding: 4.5rem 0 4rem;
++}
++
++.hero h1 {
++  font-family: var(--font-serif);
++  font-size: clamp(2.8rem, 7vw, 4.6rem);
++  font-weight: 600;
++  line-height: 1.02;
++  letter-spacing: -0.02em;
++  margin: 0 0 1.25rem;
++  color: var(--green-deep);
++  max-width: 11ch;
++}
++
++.hero p {
++  font-size: 1.15rem;
++  line-height: 1.5;
++  max-width: 30rem;
++  margin: 0 0 2rem;
++  color: var(--ink);
++}
++
++.hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
++
++/* ------------------------------------------------------------
++   Sections
++   ------------------------------------------------------------ */
++
++.section { padding: 3.5rem 0; }
++.section-band { background: var(--band); border-block: 1px solid var(--band-deep); }
++
++.section h2 {
++  font-family: var(--font-serif);
++  font-size: 1.9rem;
++  font-weight: 600;
++  line-height: 1.15;
++  margin: 0 0 1rem;
++  color: var(--ink);
++}
++
++.section p { max-width: var(--measure); margin: 0 0 1rem; }
++
++.section ul { max-width: var(--measure); }
++
++.inline-link {
++  font-weight: 600;
++  text-decoration-thickness: 2px;
++  text-underline-offset: 3px;
++}
++
++/* ------------------------------------------------------------
++   Directory — the homepage index of pages
++   Rows, not cards. Reads as a table of contents.
++   ------------------------------------------------------------ */
++
++.directory { margin: 0; padding: 0; list-style: none; max-width: none; }
++
++.dir-group + .dir-group { margin-top: 2.5rem; }
++
++.dir-group > h3 {
++  font-family: var(--font-sans);
++  font-size: 0.8rem;
++  font-weight: 700;
++  letter-spacing: 0.02em;
++  color: var(--green-deep);
++  margin: 0 0 0.5rem;
++  padding-bottom: 0.4rem;
++  border-bottom: 2px solid var(--green);
++}
++
++.dir-row {
++  display: block;
++  padding: 1.1rem 0;
++  border-bottom: 1px solid var(--rule);
++  text-decoration: none;
++  color: inherit;
++}
++
++.dir-row:hover { background: var(--band); }
++.dir-row:hover .dir-title { color: var(--green-deep); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
++
++.dir-title {
++  font-family: var(--font-serif);
++  font-size: 1.2rem;
++  font-weight: 600;
++  color: var(--blue-deep);
++  display: block;
++  line-height: 1.25;
++}
++
++.dir-desc {
++  margin: 0.25rem 0 0;
++  color: var(--ink-muted);
++  font-size: 0.9rem;
++  max-width: 40rem;
++}
++
++/* ------------------------------------------------------------
++   Page header (interior pages)
++   ------------------------------------------------------------ */
++
++.page-head {
++  padding: 3rem 0 2rem;
++  border-bottom: 3px solid var(--green);
++}
++
++.breadcrumb {
++  font-size: 0.8rem;
++  color: var(--ink-muted);
++  margin: 0 0 0.75rem;
++}
++
++.breadcrumb a { color: var(--ink-muted); text-decoration-thickness: 1px; text-underline-offset: 2px; }
++.breadcrumb a:hover { color: var(--green-deep); }
++
++.page-head h1 {
++  font-family: var(--font-serif);
++  font-size: clamp(2.1rem, 5vw, 3.1rem);
++  font-weight: 600;
++  line-height: 1.08;
++  letter-spacing: -0.015em;
++  margin: 0;
++  color: var(--ink);
++  max-width: 20ch;
++}
++
++.page-intro {
++  padding: 2rem 0 0.5rem;
++}
++
++.page-intro p {
++  max-width: var(--measure);
++  margin: 0 0 1rem;
++}
++
++.page-intro p:first-child {
++  font-size: 1.15rem;
++  line-height: 1.5;
++  color: var(--ink);
++}
++
++/* ------------------------------------------------------------
++   Resource list — the core of this site
++   Annotated bibliography, not bullet points.
++   ------------------------------------------------------------ */
++
++.resources { padding: 1.5rem 0 4rem; }
++
++.res-group { margin-top: 2.75rem; }
++
++.res-group > h2 {
++  font-family: var(--font-sans);
++  font-size: 0.82rem;
++  font-weight: 700;
++  color: var(--green-deep);
++  margin: 0 0 0.25rem;
++  padding-bottom: 0.5rem;
++  border-bottom: 2px solid var(--green);
++}
++
++.res-list {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  max-width: 42rem;
++}
++
++.entry {
++  padding: 1.35rem 0 1.35rem 1.25rem;
++  border-bottom: 1px solid var(--rule);
++  border-left: 3px solid transparent;
++  transition: border-color 120ms ease, background-color 120ms ease;
++}
++
++.entry:hover { border-left-color: var(--green); background: #F7F9F2; }
++
++.entry-title {
++  font-family: var(--font-serif);
++  font-size: 1.15rem;
++  font-weight: 600;
++  line-height: 1.3;
++  color: var(--blue-deep);
++  text-decoration: underline;
++  text-decoration-color: var(--rule);
++  text-decoration-thickness: 2px;
++  text-underline-offset: 4px;
++  display: inline-block;
++}
++
++.entry-title:hover {
++  color: var(--blue);
++  text-decoration-color: var(--blue);
++}
++
++.entry-meta {
++  margin: 0.4rem 0 0;
++  font-size: 0.8rem;
++  color: var(--ink-muted);
++  display: flex;
++  align-items: center;
++  gap: 0.6rem;
++  flex-wrap: wrap;
++}
++
++.pub { font-weight: 600; color: var(--green-deep); }
++
++/* Format flag — shown only when clicking does something unexpected
++   (downloads a file, opens a video). Information, not decoration. */
++.flag {
++  font-size: 0.68rem;
++  font-weight: 700;
++  letter-spacing: 0.03em;
++  padding: 0.1rem 0.45rem;
++  border: 1px solid var(--green);
++  border-radius: 2px;
++  color: var(--green-deep);
++  background: var(--band);
++}
++
++.entry-desc {
++  margin: 0.45rem 0 0;
++  color: var(--ink);
++  font-size: 0.92rem;
++  line-height: 1.55;
++  max-width: 36rem;
++}
++
++/* ------------------------------------------------------------
++   Callout — meeting / contact prompt
++   ------------------------------------------------------------ */
++
++.callout {
++  margin: 3rem 0 0;
++  padding: 1.75rem;
++  background: var(--band);
++  border-left: 5px solid var(--green);
++  max-width: 42rem;
++}
++
++.callout h2 {
++  font-family: var(--font-serif);
++  font-size: 1.3rem;
++  font-weight: 600;
++  margin: 0 0 0.5rem;
++  color: var(--green-deep);
++}
++
++.callout p { margin: 0 0 1rem; max-width: var(--measure); }
++.callout p:last-child { margin-bottom: 0; }
++
++/* ------------------------------------------------------------
++   Footer
++   ------------------------------------------------------------ */
++
++.site-footer {
++  background: var(--green-deep);
++  color: #EEF2E4;
++  padding: 3rem 0 2.5rem;
++  margin-top: 0;
++}
++
++.site-footer a { color: #FFFFFF; text-decoration-thickness: 1px; text-underline-offset: 3px; }
++.site-footer a:hover { color: #D8E6BE; }
++
++.footer-cols {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 2.5rem;
++  justify-content: space-between;
++}
++
++.footer-cols h3 {
++  font-family: var(--font-sans);
++  font-size: 0.78rem;
++  font-weight: 700;
++  letter-spacing: 0.03em;
++  margin: 0 0 0.75rem;
++  color: #C9DCA6;
++}
++
++.footer-cols ul { list-style: none; margin: 0; padding: 0; }
++.footer-cols li { margin-bottom: 0.4rem; }
++.footer-cols p { margin: 0 0 0.4rem; font-size: 0.9rem; }
++
++.footer-brand span {
++  font-family: var(--font-serif);
++  font-size: 1.25rem;
++  font-weight: 600;
++  color: #FFFFFF;
++  display: block;
++}
++
++/* ------------------------------------------------------------
++   Responsive
++   ------------------------------------------------------------ */
++
++/* Toggle button — hidden on desktop, where the menu is always visible. */
++.nav-toggle { display: none; }
++
++@media (max-width: 62rem) {
++  .masthead-inner { padding: 0.85rem 1.25rem; }
++  .nav > ul { gap: 0; }
++  .nav a { padding: 0.5rem 0.5rem; font-size: 0.78rem; }
++  .sub { position: static; display: block; box-shadow: none; border: 0; border-left: 3px solid var(--green); min-width: 0; padding: 0 0 0 0.5rem; margin-bottom: 0.5rem; }
++  .has-sub > a::after { display: none; }
++
++  .nav-toggle {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.55rem;
++    min-height: 48px;
++    padding: 0.6rem 1rem;
++    font-family: var(--font-sans);
++    font-size: 0.85rem;
++    font-weight: 700;
++    color: var(--green-deep);
++    background: var(--paper);
++    border: 2px solid var(--green);
++    border-radius: 3px;
++    cursor: pointer;
++  }
++
++  .nav-toggle-bars,
++  .nav-toggle-bars::before,
++  .nav-toggle-bars::after {
++    display: block;
++    width: 20px;
++    height: 2px;
++    background: currentColor;
++  }
++
++  .nav-toggle-bars { position: relative; }
++  .nav-toggle-bars::before { content: ""; position: absolute; top: -6px; }
++  .nav-toggle-bars::after  { content: ""; position: absolute; top: 6px; }
++
++  /* Collapsed by default; .is-open is applied by app.js */
++  .nav > ul { display: none; width: 100%; }
++  .nav > ul.is-open { display: flex; flex-direction: column; align-items: stretch; }
++  .nav { width: 100%; }
++}
++
++@media (max-width: 40rem) {
++  html { font-size: 18px; }
++  .wrap, .masthead-inner { padding-left: 1.1rem; padding-right: 1.1rem; }
++  .hero { padding: 3rem 0 2.5rem; }
++  .hero h1 { max-width: none; }
++  .nav > ul { flex-direction: column; align-items: stretch; }
++  .nav a { min-height: 48px; }
++  .btn { width: 100%; }
++  .entry { padding-left: 0.9rem; }
++}
++
++@media (prefers-reduced-motion: reduce) {
++  * { transition: none !important; animation: none !important; }
++}
++
++/* ------------------------------------------------------------
++   Prose - styles markdown coming out of {{ .Content }},
++   which has no classes of its own.
++   ------------------------------------------------------------ */
++
++.prose { max-width: var(--measure); }
++
++.prose > p { margin: 0 0 1rem; }
++
++.prose > p:first-child { font-size: 1.15rem; line-height: 1.5; }
++
++.prose h2 {
++  font-family: var(--font-serif);
++  font-size: 1.6rem;
++  font-weight: 600;
++  line-height: 1.2;
++  margin: 2.25rem 0 0.75rem;
++  color: var(--ink);
++}
++
++.prose h3 {
++  font-family: var(--font-serif);
++  font-size: 1.25rem;
++  font-weight: 600;
++  line-height: 1.25;
++  margin: 1.75rem 0 0.5rem;
++  color: var(--ink);
++}
++
++.prose ul { padding-left: 1.15rem; margin: 0 0 1.25rem; }
++.prose li { margin-bottom: 0.5rem; }
++
++.prose a {
++  font-weight: 600;
++  text-decoration-thickness: 2px;
++  text-underline-offset: 3px;
++}
++
++.prose strong { font-weight: 700; }
++
++/* ------------------------------------------------------------
++   Nested resource entries (a parent link with its own sub-links)
++   ------------------------------------------------------------ */
++
++.entry-children {
++  list-style: none;
++  margin: 0.85rem 0 0;
++  padding: 0 0 0 1.1rem;
++  border-left: 2px solid var(--rule);
++}
++
++.entry-children > li { margin-bottom: 0.75rem; }
++.entry-children > li:last-child { margin-bottom: 0; }
++.entry-children .entry-title { font-size: 1rem; }
++.entry-children .entry-desc { font-size: 0.87rem; }
++
++/* A group-level note: prose that sits with the entries but isn't one. */
++.res-note {
++  margin: 1rem 0 0;
++  padding-left: 1.25rem;
++  font-size: 0.9rem;
++  color: var(--ink-muted);
++  max-width: 36rem;
++}
++
++.res-note a { font-weight: 600; }
++
++/* Intro prose inside a resource group */
++.res-intro { max-width: var(--measure); margin: 0 0 1.25rem; padding-top: 0.75rem; }
++.res-intro p { margin: 0 0 0.75rem; }
++
++/* Section band heading (a group that contains sub-groups) */
++.res-section > h2 {
++  font-family: var(--font-serif);
++  font-size: 1.75rem;
++  font-weight: 600;
++  line-height: 1.2;
++  color: var(--green-deep);
++  margin: 3.25rem 0 0;
++  padding-bottom: 0.6rem;
++  border-bottom: 3px solid var(--green);
++}
++
++.res-section:first-child > h2 { margin-top: 2rem; }
++
++/* Skip link */
++.skip-link {
++  position: absolute;
++  left: -9999px;
++  top: 0;
++  background: var(--green-deep);
++  color: #FFFFFF;
++  padding: 0.75rem 1rem;
++  z-index: 100;
++  text-decoration: none;
++}
++
++.skip-link:focus { left: 0; }
+diff --git a/src/css/imports/_typography.scss b/src/css/imports/_typography.scss
+index 1dd3240..2191f5b 100755
+--- a/src/css/imports/_typography.scss
++++ b/src/css/imports/_typography.scss
+@@ -6,23 +6,28 @@ html {
+   @media (--breakpoint-large) {
+     font-size: var(--font-size-l);
+   }
+-  background-color: var(--black);
++  /* Was var(--black): a leftover from the upstream template that put a
++     black backdrop behind every page. */
++  background-color: var(--paper);
+ }
+ 
+ 
+ body {
+   font-family: var(--font-family);
+-  font-size: var(--spacing-medium);
++  font-size: 1rem;
+   line-height: var(--line-height);
+   font-weight: var(--body-font-weight);
++  color: var(--ink);
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+-  background-color: var(--off-white);
++  background-color: var(--paper);
+  }
+ 
+ p {
+   margin-bottom: var(--spacing-medium);
+-  max-width: 32rem;
++  /* The global max-width used to be 32rem, narrower than the mw7 (48rem)
++     containers wrapping it, so paragraphs stopped short of their own
++     headings on every page. Measure is now set per component instead. */
+ }
+ 
+ strong {
+diff --git a/src/css/imports/_variables.scss b/src/css/imports/_variables.scss
+index e8f9dc4..00a7c31 100644
+--- a/src/css/imports/_variables.scss
++++ b/src/css/imports/_variables.scss
+@@ -1,30 +1,58 @@
+ :root {
+-	/* Colors — Seniors for Climate brand palette */
+-	--primary: #385080; /* main color */
+-	--accent: #D0E870; /* highlight color */
+-	--secondary-1: #0077B5; /* secondary blue */
+-	--secondary-2: #0085FF; /* secondary blue */
+-	--secondary-3: #355AAB; /* secondary blue */
+-	--highlight: rgba(254, 213, 198, 1);
+-	--white: #FFFFFF;
+-	--off-white: #F2F2F2;
+-	--grey-1: #F2F2F2;
+-	--grey-2: #EAEAEA;
+-	--grey-3: #9B9B9B;
+-	--grey-4: rgba(66, 64, 64, 1);
+-	--black: #000000; /* light background font color */
++	/* ------------------------------------------------------------------
++	   Colors — sampled from the Seniors for Climate logo artwork.
++	   The wordmark is green; the illustration blue is used for links.
++	   The previous navy (#385080) appears nowhere in the brand assets.
++	   ------------------------------------------------------------------ */
++	--green:       #4E7A1E; /* logo wordmark green — primary */
++	--green-deep:  #3B5D16; /* hover, headings on light, footer ground */
++	--blue:        #0D6591; /* logo illustration blue — links */
++	--blue-deep:   #084B6D;
++	--ink:         #1A1D1A; /* body text */
++	--ink-muted:   #5A6154; /* secondary text — 6.4:1 on white, passes AA */
++	--paper:       #FFFFFF; /* reading surface */
++	--band:        #EDF1E4; /* section bands, tinted from the green */
++	--band-deep:   #E0E7D2;
++	--band-tint:   #F7F9F2; /* hover wash on resource entries */
++	--rule:        #CFD6C2; /* hairlines */
++	--focus:       #B8410E; /* focus ring — deliberately outside the palette */
++
++	/* Legacy aliases. Tachyons modules and any leftover template markup
++	   reference these names; they now resolve to the palette above. */
++	--primary:     var(--green);
++	--accent:      var(--green-deep);
++	--secondary-1: var(--blue);
++	--secondary-2: var(--blue-deep);
++	--secondary-3: var(--green-deep);
++	--highlight:   var(--band-deep);
++	--white:       #FFFFFF;
++	--off-white:   var(--band);
++	--grey-1:      #F2F2F2;
++	--grey-2:      var(--rule);
++	--grey-3:      var(--ink-muted); /* was #9B9B9B — 2.8:1 on white, failed AA */
++	--grey-4:      var(--ink-muted);
++	--black:       var(--ink);
+ 
+ 	/* Typography */
+-	--font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'avenir next', avenir, helvetica, 'helvetica neue', ubuntu, roboto, noto, 'segoe ui', arial, sans-serif;
+-	--line-height: 1.5;
++	--font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
++	--font-sans:  "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
++	--font-family: var(--font-sans);
++	--line-height: 1.6;
+ 
+-	--font-size: 18px;
++	/* One size, held across breakpoints. The old 18/20/22px ramp made
++	   Tachyons' f1 (3rem) render at 66px on desktop. */
++	--font-size: 20px;
+ 	--font-size-m: 20px;
+-	--font-size-l: 22px;
++	--font-size-l: 20px;
+ 
+ 	--body-font-weight: 400;
+ 	--bold-font-weight: 700;
+ 
++	/* Measures */
++	--measure: 34rem;
++	--page: 54rem;
++	--measure-resources: 42rem;
++
+ 	/* Sizing */
+ 	--spacing-none: 0;
+ 	--spacing-extra-small: .25rem;
+@@ -35,7 +63,7 @@
+ 	--spacing-extra-extra-large: 8rem;
+ 	--spacing-extra-extra-extra-large: 16rem;
+ 
+-	/* Miscelaneous */
+-	--border-radius: .25rem;
++	/* Miscellaneous */
++	--border-radius: 3px;
+ 	--hover-transition: all 150ms ease;
+ }
+diff --git a/src/css/main.scss b/src/css/main.scss
+index 6bec3d1..d01ca40 100644
+--- a/src/css/main.scss
++++ b/src/css/main.scss
+@@ -70,6 +70,7 @@
+ @use './imports/_z-index';
+ @use './imports/_responsive-nav';
+ @use './imports/_styles';
++@use './imports/_sfc';
+ @use './imports/_buttons';
+ @use './imports/_svg';
+ @use './imports/_cms';
+diff --git a/src/js/app.js b/src/js/app.js
+index 905bff4..d301fdb 100644
+--- a/src/js/app.js
++++ b/src/js/app.js
+@@ -8,3 +8,28 @@ if (window.netlifyIdentity) {
+     }
+   });
+ }
++
++// Mobile navigation toggle.
++// The markup previously shipped a hamburger icon and _responsive-nav.scss
++// styled a .menu-open state, but nothing ever toggled it — the icon did
++// nothing when tapped. This wires it up.
++document.addEventListener("DOMContentLoaded", () => {
++  const toggle = document.querySelector(".nav-toggle");
++  const menu = document.getElementById("nav-menu");
++  if (!toggle || !menu) return;
++
++  toggle.addEventListener("click", () => {
++    const open = toggle.getAttribute("aria-expanded") === "true";
++    toggle.setAttribute("aria-expanded", String(!open));
++    menu.classList.toggle("is-open", !open);
++  });
++
++  // Close on Escape so keyboard users aren't trapped in an open menu.
++  document.addEventListener("keydown", (e) => {
++    if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
++      toggle.setAttribute("aria-expanded", "false");
++      menu.classList.remove("is-open");
++      toggle.focus();
++    }
++  });
++});
+-- 
+2.43.0
+
