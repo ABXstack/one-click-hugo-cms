@@ -199,8 +199,8 @@ img { max-width: 100%; height: auto; display: block; }
 
 .nav .btn { padding: 0.55rem 1rem; font-size: 0.8rem; min-height: 44px; }
 .nav-actions { gap: 0.5rem; margin-left: 0.35rem; }
-.btn-donate { background: var(--highlight); border-color: var(--highlight); color: var(--primary); box-shadow: none; }
-.btn-donate:hover { background: var(--primary); border-color: var(--primary); color: var(--white); }
+.nav .btn-donate { background: var(--highlight); border-color: var(--highlight); color: var(--primary); box-shadow: none; }
+.nav .btn-donate:hover { background: var(--primary); border-color: var(--primary); color: var(--white); }
 
 /* ------------------------------------------------------------
    Homepage hero
