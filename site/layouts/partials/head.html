@@ -1,6 +1,11 @@
 <head>
 
-  <title>{{ .Title }} | {{ $.Site.Title }}</title>
+  {{ if .IsHome }}
+    <title>{{ .Title }}</title>
+  {{ else }}
+    <title>{{ .Title }} | {{ $.Site.Title }}</title>
+  {{ end }}
+  {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
 
   {{ $stylesheet := .Site.Data.webpack.main }}
   {{ with $stylesheet.css }}

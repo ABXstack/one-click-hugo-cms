@@ -1,13 +1,68 @@
 {{ define "main" }}
 
-{{ partial "jumbotron" (dict "imageUrl" .Params.image "title" .Title "subtitle" .Params.subtitle) }}
+<!-- Hero -->
+<div class="bg-off-white ph3">
+  <div class="mw7 center pv5 tc">
+    <h1 class="f1 lh-title mb3">{{ .Params.hero.headline }}</h1>
+    <p class="f3 lh-copy grey-3 mb4">{{ .Params.hero.subhead }}</p>
+    <div>
+      {{ with .Params.hero.primary_cta }}
+        <a href="{{ .link }}" class="btn-donate dib mr3">{{ .text }}</a>
+      {{ end }}
+      {{ with .Params.hero.secondary_cta }}
+        <a href="{{ .link }}" class="btn dib">{{ .text }}</a>
+      {{ end }}
+    </div>
+  </div>
+</div>
 
-{{ partial "short-text" .Params.blurb}}
+<!-- Who we are -->
+<div class="mw7 center ph3 pv5">
+  <h2 class="f2 lh-title mb3">Who we are</h2>
+  {{ range .Params.who_we_are.paragraphs }}
+    <p class="lh-copy mb3">{{ . }}</p>
+  {{ end }}
+  {{ with .Params.who_we_are.link }}
+    <a href="{{ .link }}" class="b no-underline primary">{{ .text }} →</a>
+  {{ end }}
+</div>
 
-{{ partial "2-up" .Params }}
+<!-- Get involved -->
+<div class="bg-off-white ph3">
+  <div class="mw7 center pv5">
+    <h2 class="f2 lh-title mb3">Get involved</h2>
+    <p class="lh-copy mb3">{{ .Params.get_involved.text }}</p>
+    <ul class="lh-copy mb4">
+      {{ range .Params.get_involved.bullets }}
+        <li class="mb2">{{ . | safeHTML }}</li>
+      {{ end }}
+    </ul>
+    {{ with .Params.get_involved.cta }}
+      <a href="{{ .link }}" class="btn-donate dib">{{ .text }}</a>
+    {{ end }}
+  </div>
+</div>
 
-{{ partial "text-and-image" (dict "heading" .Params.values.heading "text" .Params.values.text "buttonText" "Read more" "buttonLink" "/values") }}
+<!-- Learn more, do more -->
+<div class="mw8 center ph3 pv5">
+  <h2 class="f2 lh-title mb3 tc">{{ .Params.learn_more.heading }}</h2>
+  <p class="lh-copy mb4 tc mw6 center">{{ .Params.learn_more.intro }}</p>
 
-{{ partial "blog" . }}
+  {{ range .Params.learn_more.groups }}
+    <h3 class="f4 b lh-title mb3 mt4">{{ .heading }}</h3>
+    <ul class="flex-ns flex-wrap mhn2-ns list pl0">
+      {{ range .items }}
+        <li class="w-50-ns ph2-ns mb3">
+          <a href="{{ .link }}" class="no-underline">
+            <div class="pa3 h-100 bg-off-white br2">
+              <h4 class="f5 b lh-title mb2 primary">{{ .title }}</h4>
+              <p class="lh-copy grey-3 ma0">{{ .text }}</p>
+            </div>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  {{ end }}
+</div>
 
 {{ end }}

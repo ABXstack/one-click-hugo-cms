@@ -1,16 +1,8 @@
 {{ define "main" }}
 
-{{ partial "jumbotron" (dict "imageUrl" "/img/blog-index.jpg" "title" "Latest stories") }}
-
-<div class="mw7 center">
-  <ul id="blog-list" class="flex-ns flex-wrap mhn1-ns pa3">
-      {{ range (.Paginator 4).Pages.ByPublishDate.Reverse }}
-          <li class="w-50-ns ph1-ns flex">
-            {{ .Render "li"}}
-          </li>
-      {{ end }}
-  </ul>
-  {{ partial "pagination" . }}
+<div class="mw7 center ph3 pt5 pb5">
+  <h1 class="f1 lh-title mb3">{{ .Title }}</h1>
+  {{ .Content }}
 </div>
 
-{{end}}
+{{ end }}

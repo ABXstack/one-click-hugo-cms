@@ -1,19 +1,18 @@
 ---
-title: "Contact"
-logo: "/img/logo.svg"
-contact_entries:
-  - heading: Location
-    text: "3153 Lynn Avenue, South San Francisco, California 94080"
-  - heading: Working hours
-    text: "Monday – Saturday: 9AM – 7PM We’re closed on Sundays"
+title: "Contact Us"
+description: "Get in touch with Seniors for Climate in British Columbia, or join one of our monthly online meetings."
 ---
 
-We’d love to get in touch with you and hear your ideas and
-questions. We strive to grow and improve constantly and your feedback
-is valuable for us.
+We would like to hear from you — whether you want to volunteer, have a question, are organizing something in your community, or just want to know what we are up to.
 
-<h3 class="f4 b lh-title mb2">How can I get…?</h3>
+## Email
 
-You can also use the form below for any inquiries about coffee
-availability, monthly subscriptions and scheduling a 1-on-1 session
-with our baristas. Don’t be shy, drop us a line!
+[bc-hub@seniorsforclimate.org](mailto:bc-hub@seniorsforclimate.org)
+
+We are all volunteers, so please give us a little time to reply.
+
+## Monthly online meetings
+
+We meet online once a month. The meetings are open to anyone interested in climate action in British Columbia, and there is no obligation to speak or sign up for anything.
+
+Email us and we will send you the meeting link and the schedule.
