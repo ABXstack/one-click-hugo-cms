@@ -1,20 +1,21 @@
 :root {
 	/* Colors — Seniors for Climate brand palette */
-	--primary: #385080; /* steelblue - nav links, buttons */
-	--accent: #D0E870; /* khaki - donate button text, highlights */
-	--brand-gray: #807878; /* gray */
-	--brand-lavender: #D8E8F8; /* lavender */
+	--primary: #385080; /* main color */
+	--accent: #D0E870; /* highlight color */
+	--secondary-1: #0077B5; /* secondary blue */
+	--secondary-2: #0085FF; /* secondary blue */
+	--secondary-3: #355AAB; /* secondary blue */
 	--highlight: rgba(254, 213, 198, 1);
-	--white: rgba(255, 255, 255, 1);
-	--off-white: #F8F8F8; /* whitesmoke */
-	--grey-1: rgba(245, 243, 242, 1);
-	--grey-2: rgba(235, 231, 230, 1);
-	--grey-3: rgba(89, 87, 86, 1);
+	--white: #FFFFFF;
+	--off-white: #F2F2F2;
+	--grey-1: #F2F2F2;
+	--grey-2: #EAEAEA;
+	--grey-3: #9B9B9B;
 	--grey-4: rgba(66, 64, 64, 1);
-	--black: rgba(43, 37, 35, 1);
+	--black: #000000; /* light background font color */
 
 	/* Typography */
-	--font-family: Nunito Sans, -apple-system, BlinkMacSystemFont, 'avenir next', avenir, helvetica, 'helvetica neue', ubuntu, roboto, noto, 'segoe ui', arial, sans-serif;
+	--font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'avenir next', avenir, helvetica, 'helvetica neue', ubuntu, roboto, noto, 'segoe ui', arial, sans-serif;
 	--line-height: 1.5;
 
 	--font-size: 18px;
