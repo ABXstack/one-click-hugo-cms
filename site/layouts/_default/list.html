@@ -1,8 +1,19 @@
 {{ define "main" }}
 
-<div class="mw7 center ph3 pt5 pb5">
-  <h1 class="f1 lh-title mb3">{{ .Title }}</h1>
-  {{ .Content }}
-</div>
+{{ partial "page-head" . }}
+
+{{ with .Content }}
+	<div class="page-intro">
+		<div class="wrap">
+			<div class="prose">{{ . }}</div>
+		</div>
+	</div>
+{{ end }}
+
+{{ if .Params.resources }}
+	{{ partial "resources" . }}
+{{ else }}
+	<div style="padding-bottom:4rem"></div>
+{{ end }}
 
 {{ end }}

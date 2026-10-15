@@ -1,0 +1,13 @@
+{{/* Page title with a breadcrumb back to the parent section. */}}
+<div class="page-head">
+	<div class="wrap">
+		{{ $parent := .Parent }}
+		<p class="breadcrumb">
+			<a href="/">Home</a>
+			{{ if and $parent (not $parent.IsHome) }}
+				&nbsp;&rsaquo;&nbsp; <a href="{{ $parent.RelPermalink }}">{{ $parent.Title }}</a>
+			{{ end }}
+		</p>
+		<h1>{{ .Title }}</h1>
+	</div>
+</div>

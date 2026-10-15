@@ -1,0 +1,93 @@
+{{/*
+  Renders the `resources` front matter block.
+
+  Shape (two levels, both optional beyond `heading`):
+
+    resources:
+      - heading: "Section or group name"
+        intro:   ["paragraph", ...]
+        entries: [ {title, url, publisher, date, format, description, children} ]
+        notes:   ["markdown line", ...]
+        groups:  [ { same shape, one level down } ]
+
+  A block with `groups` renders as a section band; a block without
+  renders as a plain group. Descriptions run through markdownify so
+  inline links inside them survive.
+*/}}
+
+{{ define "sfc-entries" }}
+	<ul class="res-list">
+		{{ range . }}
+			<li class="entry">
+				<a class="entry-title" href="{{ .url }}">{{ .title }}</a>
+
+				{{ if or .publisher .date .format }}
+					<p class="entry-meta">
+						{{ with .publisher }}<span class="pub">{{ . }}</span>{{ end }}
+						{{ with .date }}<span>{{ . }}</span>{{ end }}
+						{{ with .format }}<span class="flag">{{ . }}</span>{{ end }}
+					</p>
+				{{ end }}
+
+				{{ with .description }}<p class="entry-desc">{{ . | markdownify }}</p>{{ end }}
+
+				{{ with .children }}
+					<ul class="entry-children">
+						{{ range . }}
+							<li>
+								<a class="entry-title" href="{{ .url }}">{{ .title }}</a>
+								{{ if or .publisher .format }}
+									<p class="entry-meta">
+										{{ with .publisher }}<span class="pub">{{ . }}</span>{{ end }}
+										{{ with .format }}<span class="flag">{{ . }}</span>{{ end }}
+									</p>
+								{{ end }}
+								{{ with .description }}<p class="entry-desc">{{ . | markdownify }}</p>{{ end }}
+							</li>
+						{{ end }}
+					</ul>
+				{{ end }}
+			</li>
+		{{ end }}
+	</ul>
+{{ end }}
+
+{{ define "sfc-group" }}
+	<section class="res-group">
+		<h2>{{ .heading }}</h2>
+
+		{{ with .intro }}
+			<div class="res-intro">
+				{{ range . }}<p>{{ . | markdownify }}</p>{{ end }}
+			</div>
+		{{ end }}
+
+		{{ with .entries }}{{ template "sfc-entries" . }}{{ end }}
+
+		{{ range .notes }}<p class="res-note">{{ . | markdownify }}</p>{{ end }}
+	</section>
+{{ end }}
+
+<div class="resources">
+	<div class="wrap">
+		{{ range .Params.resources }}
+			{{ if .groups }}
+				<section class="res-section">
+					<h2>{{ .heading }}</h2>
+
+					{{ with .intro }}
+						<div class="res-intro">
+							{{ range . }}<p>{{ . | markdownify }}</p>{{ end }}
+						</div>
+					{{ end }}
+
+					{{ with .entries }}{{ template "sfc-entries" . }}{{ end }}
+
+					{{ range .groups }}{{ template "sfc-group" . }}{{ end }}
+				</section>
+			{{ else }}
+				{{ template "sfc-group" . }}
+			{{ end }}
+		{{ end }}
+	</div>
+</div>

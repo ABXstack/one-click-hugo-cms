@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="{{ $.Site.Language.Lang }}">
   {{ partial "head" . }}
-  <body class="sans-serif">
+  <body>
 
     {{ block "header" . }}{{ partial "nav" . }}{{end}}
 
-    {{ block "main" . }}{{ end }}
+    <main id="main">
+      {{ block "main" . }}{{ end }}
+    </main>
 
     {{ block "footer" . }}{{ partial "footer" . }}{{end}}
 
