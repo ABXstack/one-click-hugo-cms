@@ -327,13 +327,17 @@ img { max-width: 100%; height: auto; display: block; }
   margin: 0 0 0.25rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid var(--green);
+  /* Must match .res-list below. Without it the heading fills the whole
+     54rem wrap and its green rule overhangs the entry hairlines it heads
+     by ~180px, which reads as a misalignment on every resource page. */
+  max-width: var(--measure-resources);
 }
 
 .res-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-width: 42rem;
+  max-width: var(--measure-resources);
 }
 
 .entry {
