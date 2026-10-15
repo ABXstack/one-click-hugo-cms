@@ -1,0 +1,20 @@
+# Make sure visitors (and us) always get the current version of the site.
+# SiteGround's server-side cache was serving a stale homepage, causing the
+# site to show old content even after fresh uploads. This tells the web
+# server never to cache HTML pages. Hashed CSS/JS/image files are left
+# alone — their filenames change whenever their content changes, so it's
+# safe (and good for performance) to let those cache normally.
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+  <FilesMatch "\.(html|htm)$">
+    ExpiresActive Off
+  </FilesMatch>
+</IfModule>
