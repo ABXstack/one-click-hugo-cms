@@ -51,16 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (window.matchMedia("(min-width: 62.01rem)").matches) closeMenu();
     });
   }
-
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", (user) => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
 });
 
 // Say hello
