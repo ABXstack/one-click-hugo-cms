@@ -190,15 +190,26 @@ fell back to browser defaults. `.prose` in `_sfc.scss` styles that output.
 
 `LICENSE` is retained for upstream MIT attribution.
 
-**There is no web-based CMS.** Content changes require editing Markdown and
-running a build.
+**There is no web-based CMS in the built site.** Content changes require
+editing Markdown and running a build. Note that `decap-cms-app` is still an
+installed dependency and `site/static/admin/` still ships — see below. The CMS
+is not wired into any template, but the files are still there.
 
 ### Still present from the template, pending cleanup
 
-These were *not* removed, despite earlier notes claiming otherwise:
-`netlify.toml`, `cypress/`, `cypress.config.js`, `src/js/cms.js`,
-`site/static/admin/`. They are inert but misleading — `netlify.toml` in
-particular suggests a Netlify deploy that does not exist.
+These were *not* removed, despite earlier notes claiming otherwise.
+
+Files: `netlify.toml`, `cypress/`, `cypress.config.js`, `src/js/cms.js`,
+`site/static/admin/` (including `config.yml` with its git-gateway TODO).
+
+`package.json` dependencies: `decap-cms-app`, `react`, `react-dom`, `cypress`,
+`netlify-plugin-cypress`, `@babel/preset-react`, plus `eslint-plugin-react` and
+`eslint-plugin-cypress` in devDependencies.
+
+They are inert but misleading — `netlify.toml` suggests a Netlify deploy that
+does not exist, and the Decap/React dependencies suggest a CMS that is not
+wired up. Removing them is pending; until then, do not write documentation
+claiming they are gone.
 
 ## Current state
 
