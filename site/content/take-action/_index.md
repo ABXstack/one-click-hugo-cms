@@ -120,3 +120,5 @@ Everyone wants to move the needle, a little or a lot. This page is for turning t
 We have split it in two. **Individual action** is what you can do from your kitchen table — write a letter, change a habit, sign on to a campaign. **Collective action** is what happens when we do it together, which is usually where the real leverage is. Pick whichever fits the week you are having.
 
 Two things deserve their own page, and you will find them in the menu: [meeting with your elected officials](/take-action/meet-your-elected-officials/), which is one of the most effective things a senior can do, and [joining us](/take-action/join-us/), which is how most of this actually gets done.
+
+There is also a larger project underway: the [BC Provincial Climate Risk Briefing](/take-action/bc-pcrb/), a senior-led briefing and documentary about the climate and nature risks facing BC over the next fifty years.

@@ -102,19 +102,29 @@ site/content/        Markdown + front matter
   _index.md          homepage (copy lives in front matter)
   about/             About Us + 4 background pages
   take-action/       Take Action + Meet With Elected Officials + Join Us
+                      + bc-pcrb/ (BC Provincial Climate Risk Briefing — see below)
   blog/ news/ contact/ donate/
+site/data/
+  bc-pcrb.yaml       the BC-PCRB section order — nav, TOC, sticky bar and
+                      prev/next all read this one list, not each other
 site/layouts/
   index.html         homepage template
   blog/single.html   single blog post
   section/blog.html  blog index
+  _default/bc-pcrb.html       the long BC-PCRB page
+  _default/bc-pcrb-page.html  its two sub-pages (watch-together, schools)
   partials/
     resources.html   renders the resource lists  ← the important one
+    pcrb-toc.html  pcrb-stickybar.html  pcrb-prevnext.html
     nav.html  head.html  page-head.html  footer.html
 src/css/imports/
   _variables.scss    design tokens
   _sfc.scss          component styles for this site
-src/js/app.js        mobile nav toggle (35 lines)
+src/index.js         real JS entry (nav toggle, BC-PCRB sticky bar/scrollspy)
 ```
+
+`src/js/app.js` is dead — an earlier, superseded copy of the nav-toggle code.
+Nothing imports it. Not yet removed.
 
 Most files in `src/css/imports/` are stock Tachyons modules. Only
 `_variables.scss` and `_sfc.scss` are this site's own.
@@ -165,8 +175,50 @@ decoration. Don't add it to ordinary links.
 - **Section headings and their lists share `--measure-resources`.** A heading
   without that cap stretches to the full container and its rule overhangs the
   cards beneath it. If you add a new section heading, cap it.
+- **The BC-PCRB sticky section bar is sticky only at desktop widths.** Below
+  62.01rem the masthead itself stops being sticky (see `.masthead` above), so
+  there is no fixed header for the bar to sit under and no case for pinning
+  it — it would just eat phone viewport for a seniors' audience already
+  tight on vertical space. Below that breakpoint it renders in normal flow
+  as a horizontally scrolling row instead. Don't "fix" this by making it
+  sticky on mobile.
 
 Layout tokens: `--page: 72rem`, `--measure: 40rem`, `--measure-resources: 64rem`.
+
+### BC Provincial Climate Risk Briefing (`/take-action/bc-pcrb/`)
+
+One long page with anchored sections, plus two real sub-pages people link to
+directly (`watch-together/`, `schools/`). `site/data/bc-pcrb.yaml` is the one
+place the section order lives — the nav dropdown, the "On this page" list,
+the sticky bar and every prev/next link all read that file instead of each
+other. Add or reorder a section there, not in four separate templates.
+
+Content lives as structured front matter (`sections:` on `_index.md`, one
+block per section with `id`, `heading`, optional `image`/`alt`, a markdown
+`body`, optional `actions`) rather than one `.Content` blob, specifically so
+the template can insert the two sub-page link cards between `science-story`
+and `seniors-leading` without parsing markdown to find the seam.
+
+An `actions` entry with no `url` renders as plain text (`.pcrb-coming-soon`),
+not a link — used for anything dated "available May 2027" that doesn't exist
+yet. Don't invent a `url` to make one clickable.
+
+**Hard constraints, carried over from the brief — still apply to any future
+edit of this section:**
+
+- No page for the eleven numbered source documents (0–8, 6a, 6b) exists.
+  Don't add links to them, even placeholder ones — they were explicitly to
+  be left out rather than built as dead links. If they're supplied later,
+  they slot into `risks` (docs 1–5), `briefing` (docs 0, 6, 6a, 6b) and
+  `seniors-leading` (doc 7).
+- No form of any kind. "I'd like to help" (seniors-leading) and "Keep me
+  updated" (support) were both specified as forms in the source and were
+  both dropped, not stubbed.
+- No donation mechanics here, and the Donate page is untouched. The source
+  specifies CanadaHelps buttons, preset amounts and an $80,000 goal; none of
+  it is built. The `support` section's copy was rewritten to ask only for
+  time and screenings, not money, until that's resolved — see the Donate-
+  page rule above, which this section cannot contradict.
 
 ## History — don't reintroduce
 
@@ -211,12 +263,21 @@ does not exist, and the Decap/React dependencies suggest a CMS that is not
 wired up. Removing them is pending; until then, do not write documentation
 claiming they are gone.
 
+**`npm install` currently fails on a clean clone or empty `node_modules`** —
+confirmed, not theoretical: `decap-cms-app` pins `decap-cms-widget-date@^2.5.7`,
+which no longer resolves (`ETARGET`). Builds only work right now because
+`node_modules` already exists from before this broke. Removing the dead
+Decap/React/Cypress dependencies above would also fix this; until then,
+don't `rm -rf node_modules`.
+
 ## Current state
 
 Live and deployed at bc.seniorsforclimate.org, built from
 `claude/nonprofit-document-hub-avi8e3` and uploaded by FTP.
 
-`.DS_Store` is not in `.gitignore` and repeatedly tries to stage. Add it.
+The BC-PCRB section (`/take-action/bc-pcrb/` + `watch-together/` + `schools/`)
+is built and committed but **not yet uploaded** — it needs its images
+(open item below) in place first, and a build + FTP upload after that.
 
 ## Open and unresolved — flag, don't guess
 
@@ -240,9 +301,37 @@ Live and deployed at bc.seniorsforclimate.org, built from
    rather than a photograph of the group should be flagged to the client, not
    wired in as though it were documentary. For an organization whose value is
    trust, invented photographs of British Columbians are a real risk.
-9. **BC-PCRB section** — a large new section is planned under Take Action
-   (BC Provincial Climate Risk Briefing). Copy drafted separately; depends on
-   eleven linked documents not yet supplied.
+9. **BC-PCRB images not yet supplied.** Every `image`/`alt` path under
+   `/take-action/bc-pcrb/` points at `/img/bc-pcrb/<filename>.{png,jpeg}` —
+   none of those files exist in `site/static/img/bc-pcrb/` yet. They'll 404
+   until the actual files are dropped in with those exact names (they were
+   supplied separately from the copy, named to match each section).
+10. **BC-PCRB, section `support`, has no image.** The source's suggested
+    replacement image (`08-river-canyon.png`, for the excluded textbook-cover
+    photo) is used on `science-story` instead, per the brief's own
+    recommendation — `support` was left with no image rather than reusing
+    one or inventing a choice. Needs a real photo supplied.
+11. **BC-PCRB "Economic and insurance risk" claim was softened, not sourced.**
+    The source's uncited "Increasing!" was replaced with a general,
+    defensible sentence rather than published as a claimed fact. If a real
+    source exists, it can go back in as a cited claim.
+12. **BC-PCRB duplicate external link, inconsistent label.**
+    `https://www.patreon.com/justhaveathink/posts/complete-change-144741531`
+    now appears three times: twice under BC-PCRB ("See the model this is
+    built on"), and once already on `/about/what-is-climate-change/` labelled
+    "British National Emergency Briefing — Climate Change" — same video, a
+    different description. Not changed as part of this build since that page
+    is outside BC-PCRB's scope; worth reconciling the labels.
+13. **BC-PCRB's eleven source documents (0–8, 6a, 6b) still aren't supplied.**
+    See the hard-constraints note above — nothing links to them. When they
+    arrive, `risks`, `briefing` and `seniors-leading` all have a specific
+    place for them.
+14. **BC-PCRB forms and donation mechanics remain unbuilt by design** — see
+    the hard-constraints note above. Needs: a decision on a form handler
+    (Formspree/Tally/plain `mailto:`, since this is a static FTP-deployed
+    site with no server-side processing) before "I'd like to help" or "Keep
+    me updated" can exist at all, and National's sign-off before any
+    donation ask can go live.
 
 ## Verify before any deploy
 
@@ -250,7 +339,7 @@ Live and deployed at bc.seniorsforclimate.org, built from
 npm run build
 # then check:
 #  - every external URL present and byte-identical (HTML-unescape first;
-#    currently 58 unique URLs under site/content/)
+#    currently 59 unique URLs under site/content/)
 #  - mobile nav opens and closes at 390px
 #  - no contrast regressions
 #  - /favicon.ico resolves at the site root, not just /img/favicon.ico
