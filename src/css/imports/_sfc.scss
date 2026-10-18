@@ -431,6 +431,9 @@ img { max-width: 100%; height: auto; display: block; }
   margin: 0 0 0.25rem;
   padding-bottom: 0.5rem;
   border-bottom: 4px solid var(--highlight);
+  /* Must match .res-list below. Without it the heading fills the whole
+     container and its rule overhangs the cards it heads. */
+  max-width: var(--measure-resources);
 }
 
 .res-list {
