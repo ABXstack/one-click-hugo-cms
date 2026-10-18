@@ -7,5 +7,5 @@ yarn-error.log
 .hugo_build.lock
 
 cypress/videos
-cypress/screenshots.DS_Store
+cypress/screenshots
 .DS_Store
