@@ -36,6 +36,10 @@
 					<ul class="sub" id="action-submenu">
 						<li><a href="/take-action/meet-your-elected-officials/">Meet With Your Elected Officials</a></li>
 						<li><a href="/take-action/join-us/">Join Us</a></li>
+						<li class="sub-divider"><a href="/take-action/bc-pcrb/">BC Provincial Climate Risk Briefing</a></li>
+						{{ range (index .Site.Data "bc-pcrb").chain }}
+							<li class="sub-indent"><a href="{{ if eq .kind "page" }}{{ .page }}{{ else }}{{ .page }}#{{ .id }}{{ end }}">{{ .nav_label }}</a></li>
+						{{ end }}
 					</ul>
 				</li>
 

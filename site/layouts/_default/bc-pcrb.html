@@ -1,0 +1,106 @@
+{{ define "main" }}
+
+<div class="pcrb-breadcrumb-bar">
+	<div class="wrap">
+		<p class="breadcrumb">
+			<a href="/">Home</a>
+			&nbsp;&rsaquo;&nbsp; <a href="/take-action/">Take Action</a>
+		</p>
+	</div>
+</div>
+
+<section class="pcrb-hero">
+	<div class="pcrb-hero-grid wrap">
+		<div class="pcrb-hero-copy">
+			<p class="hero-kicker">{{ .Params.hero.kicker }}</p>
+			<h1>{{ .Params.hero.headline }}</h1>
+			<p class="pcrb-hero-subhead">{{ .Params.hero.subhead }}</p>
+		</div>
+		{{ with .Params.hero.image }}
+			<div class="pcrb-hero-photo">
+				<img src="{{ . }}" alt="{{ $.Params.hero.alt }}" loading="eager">
+			</div>
+		{{ end }}
+	</div>
+</section>
+
+<div class="wrap pcrb-intro-wrap">
+	<div class="pcrb-intro prose">
+		{{ range .Params.intro }}<p>{{ . | markdownify }}</p>{{ end }}
+	</div>
+	{{ with .Params.due }}<p class="pcrb-due">{{ . }}</p>{{ end }}
+
+	<div class="pcrb-actions">
+		{{ range .Params.primary_actions }}
+			{{ if .url }}
+				<a class="btn" href="{{ .url }}"{{ if .external }} target="_blank" rel="noopener"{{ end }}>{{ .text }}</a>
+			{{ else }}
+				<p class="pcrb-coming-soon"><strong>{{ .text }}</strong> — {{ .sub }}</p>
+			{{ end }}
+		{{ end }}
+	</div>
+</div>
+
+{{ partial "pcrb-toc" . }}
+{{ partial "pcrb-stickybar" . }}
+
+{{ range .Params.sections }}
+	{{ $sec := . }}
+	<section class="pcrb-section" id="{{ $sec.id }}">
+		<div class="wrap">
+			<h2>{{ $sec.heading }}</h2>
+			{{ if $sec.image }}
+				<figure class="pcrb-figure">
+					<img src="{{ $sec.image }}" alt="{{ $sec.alt }}" loading="lazy">
+				</figure>
+			{{ end }}
+			<div class="prose">{{ $sec.body | markdownify }}</div>
+
+			{{ if $sec.actions }}
+				<div class="pcrb-actions">
+					{{ range $sec.actions }}
+						{{ if .url }}
+							<a class="btn btn-quiet" href="{{ .url }}"{{ if .external }} target="_blank" rel="noopener"{{ end }}>{{ .text }}</a>
+						{{ else }}
+							<p class="pcrb-coming-soon"><strong>{{ .text }}</strong> — {{ .sub }}</p>
+						{{ end }}
+					{{ end }}
+				</div>
+			{{ end }}
+		</div>
+	</section>
+
+	{{ partial "pcrb-prevnext" (dict "id" $sec.id "page" $) }}
+
+	{{ if eq $sec.id "science-story" }}
+		<section class="pcrb-section pcrb-pagecards">
+			<div class="wrap">
+				<div class="pcrb-pagecard-grid">
+					<a class="pcrb-pagecard" href="/take-action/bc-pcrb/watch-together/">
+						<span class="pcrb-pagecard-kicker">Watch It Together &rarr;</span>
+						<p>Host a home or community screening, with a guide and discussion questions.</p>
+					</a>
+					<a class="pcrb-pagecard" href="/take-action/bc-pcrb/schools/">
+						<span class="pcrb-pagecard-kicker">For Teachers and Students &rarr;</span>
+						<p>Classroom resources to explore BC's changing climate.</p>
+					</a>
+				</div>
+			</div>
+		</section>
+	{{ end }}
+{{ end }}
+
+{{ with .Params.closing }}
+	<section class="pcrb-section pcrb-closing section-band">
+		<div class="wrap">
+			{{ with .image }}
+				<figure class="pcrb-figure">
+					<img src="{{ . }}" alt="{{ $.Params.closing.alt }}" loading="lazy">
+				</figure>
+			{{ end }}
+			<div class="prose">{{ .body | markdownify }}</div>
+		</div>
+	</section>
+{{ end }}
+
+{{ end }}

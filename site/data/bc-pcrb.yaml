@@ -1,0 +1,35 @@
+# Shared sequence for the BC Provincial Climate Risk Briefing section.
+# One source of truth for: the "On this page" list, the sticky section bar,
+# prev/next links, and the Take Action nav dropdown.
+#
+# kind: "anchor" — lives on the long page at /take-action/bc-pcrb/#<id>
+# kind: "page"   — its own page; `page` is the full URL, no anchor.
+chain:
+  - id: "risks"
+    nav_label: "The Risks Are Already Here"
+    kind: "anchor"
+    page: "/take-action/bc-pcrb/"
+  - id: "briefing"
+    nav_label: "A Briefing for British Columbians"
+    kind: "anchor"
+    page: "/take-action/bc-pcrb/"
+  - id: "science-story"
+    nav_label: "From Science to Story"
+    kind: "anchor"
+    page: "/take-action/bc-pcrb/"
+  - id: "watch-together"
+    nav_label: "Watch It Together"
+    kind: "page"
+    page: "/take-action/bc-pcrb/watch-together/"
+  - id: "schools"
+    nav_label: "For Teachers and Students"
+    kind: "page"
+    page: "/take-action/bc-pcrb/schools/"
+  - id: "seniors-leading"
+    nav_label: "Seniors Leading for Future Generations"
+    kind: "anchor"
+    page: "/take-action/bc-pcrb/"
+  - id: "support"
+    nav_label: "Support the Project"
+    kind: "anchor"
+    page: "/take-action/bc-pcrb/"

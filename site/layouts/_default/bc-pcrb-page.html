@@ -1,0 +1,41 @@
+{{ define "main" }}
+
+<div class="page-head">
+	<div class="wrap">
+		<p class="breadcrumb">
+			<a href="/">Home</a>
+			&nbsp;&rsaquo;&nbsp; <a href="/take-action/">Take Action</a>
+			&nbsp;&rsaquo;&nbsp; <a href="/take-action/bc-pcrb/">BC Provincial Climate Risk Briefing</a>
+		</p>
+		<h1>{{ .Title }}</h1>
+	</div>
+</div>
+
+{{ partial "pcrb-stickybar" . }}
+
+<section class="pcrb-section">
+	<div class="wrap">
+		{{ with .Params.image }}
+			<figure class="pcrb-figure">
+				<img src="{{ . }}" alt="{{ $.Params.alt }}" loading="eager">
+			</figure>
+		{{ end }}
+		<div class="prose">{{ .Content }}</div>
+
+		{{ if .Params.actions }}
+			<div class="pcrb-actions">
+				{{ range .Params.actions }}
+					{{ if .url }}
+						<a class="btn" href="{{ .url }}"{{ if .external }} target="_blank" rel="noopener"{{ end }}>{{ .text }}</a>
+					{{ else }}
+						<p class="pcrb-coming-soon"><strong>{{ .text }}</strong> — {{ .sub }}</p>
+					{{ end }}
+				{{ end }}
+			</div>
+		{{ end }}
+	</div>
+</section>
+
+{{ partial "pcrb-prevnext" (dict "id" .Params.chain_id "page" .) }}
+
+{{ end }}

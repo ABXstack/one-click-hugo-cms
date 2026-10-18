@@ -1,0 +1,24 @@
+{{/*
+  Sticky section bar for the BC-PCRB sequence. Appears on the long page and
+  on both sub-pages, so a reader always knows where they are in the chain.
+
+  On the long page, `chain_id` is unset — JS (data-pcrb-stickybar) marks the
+  current item by scroll position. On the two sub-pages, the front matter
+  sets chain_id so the current item is correct even with JS disabled.
+*/}}
+{{ $current := .Params.chain_id }}
+<nav class="pcrb-stickybar" aria-label="BC Provincial Climate Risk Briefing sections" data-pcrb-stickybar>
+	<div class="pcrb-stickybar-inner">
+		<ul>
+			{{ range (index .Site.Data "bc-pcrb").chain }}
+				<li>
+					<a
+						href="{{ if eq .kind "page" }}{{ .page }}{{ else }}{{ .page }}#{{ .id }}{{ end }}"
+						data-pcrb-id="{{ .id }}"
+						{{ if eq .id $current }}aria-current="true" class="is-current"{{ end }}
+					>{{ .nav_label }}</a>
+				</li>
+			{{ end }}
+		</ul>
+	</div>
+</nav>

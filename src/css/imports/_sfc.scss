@@ -178,6 +178,10 @@ img { max-width: 100%; height: auto; display: block; }
 
 .sub a { font-weight: 500; font-size: 0.8rem; white-space: normal; }
 
+.sub-divider { margin-top: 0.35rem; padding-top: 0.5rem; border-top: 1px solid var(--rule); }
+.sub-divider a { font-weight: 700; color: var(--primary); }
+.sub-indent a { padding-left: 1.1rem; font-size: 0.76rem; }
+
 /* Buttons */
 
 .btn {
@@ -569,6 +573,148 @@ img { max-width: 100%; height: auto; display: block; }
 .footer-brand-link .brand-region { color: var(--white); border-left-color: var(--highlight); }
 
 /* ------------------------------------------------------------
+   BC Provincial Climate Risk Briefing
+   ------------------------------------------------------------ */
+
+.pcrb-breadcrumb-bar {
+  padding: 0.85rem 0;
+  background: var(--band);
+  border-bottom: 1px solid var(--band-deep);
+}
+.pcrb-breadcrumb-bar .breadcrumb { margin: 0; color: var(--ink-muted); }
+.pcrb-breadcrumb-bar .breadcrumb a { color: var(--primary); }
+
+.pcrb-hero {
+  background: var(--primary);
+  border-bottom: 10px solid var(--highlight);
+}
+.pcrb-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(20rem, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 2.5rem;
+  min-height: 24rem;
+}
+.pcrb-hero-copy { padding: 3.5rem 0; }
+.pcrb-hero-copy h1 {
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  color: var(--white);
+  max-width: 16ch;
+}
+.pcrb-hero-subhead { font-size: 1.1rem; line-height: 1.5; max-width: 30rem; margin: 0; color: var(--white); }
+.pcrb-hero-photo { min-width: 0; overflow: hidden; border-radius: var(--border-radius); }
+.pcrb-hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.pcrb-intro-wrap { padding: 3rem 0 1rem; }
+.pcrb-intro p { max-width: var(--measure); margin: 0 0 1rem; }
+.pcrb-intro p:first-child { font-size: 1.1rem; }
+.pcrb-due { font-weight: 700; color: var(--primary); margin: 0 0 1.5rem; }
+
+.pcrb-actions { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; margin: 1.5rem 0; }
+
+.pcrb-coming-soon {
+  margin: 0;
+  padding: 0.6rem 0;
+  max-width: var(--measure);
+  color: var(--ink-muted);
+  font-size: 0.92rem;
+}
+.pcrb-coming-soon strong { color: var(--primary); }
+
+/* On this page */
+.pcrb-toc {
+  margin: 0 auto 2.5rem;
+  max-width: var(--page);
+  padding: 1.25rem 2rem;
+  background: var(--band);
+  border-left: 8px solid var(--highlight);
+  border-radius: var(--border-radius);
+}
+.pcrb-toc-label { margin: 0 0 0.5rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--primary); }
+.pcrb-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 1.5rem;
+  counter-reset: pcrb-toc;
+}
+.pcrb-toc li { counter-increment: pcrb-toc; font-size: 0.95rem; }
+.pcrb-toc li::before { content: counter(pcrb-toc) ". "; font-weight: 700; color: var(--primary); }
+.pcrb-toc-flag { margin-left: 0.4rem; font-size: 0.72rem; color: var(--ink-muted); }
+
+/* Sticky section bar — follows the reader down the long page and stays
+   present (non-sticky, in flow) on the two sub-pages. Revealed by JS once
+   the hero scrolls past; see src/index.js. */
+.pcrb-stickybar {
+  position: sticky;
+  top: var(--pcrb-sticky-offset, 0px);
+  z-index: 90;
+  background: var(--paper);
+  border-bottom: 1px solid var(--band-deep);
+  box-shadow: 0 4px 12px rgba(56, 80, 128, 0.08);
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+.pcrb-stickybar.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.pcrb-stickybar-inner { max-width: var(--page); margin: 0 auto; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.pcrb-stickybar ul { list-style: none; margin: 0; padding: 0 2rem; display: flex; gap: 0.25rem; white-space: nowrap; }
+.pcrb-stickybar li { flex: 0 0 auto; }
+.pcrb-stickybar a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.pcrb-stickybar a:hover { color: var(--primary); }
+.pcrb-stickybar a.is-current { color: var(--primary); border-bottom-color: var(--highlight); }
+
+/* Sections */
+.pcrb-section { padding: 3.5rem 0; scroll-margin-top: calc(var(--pcrb-sticky-offset, 0px) + 4.5rem); }
+.pcrb-section h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.15; margin: 0 0 1.25rem; color: var(--primary); }
+.pcrb-section .prose { max-width: var(--measure); }
+.pcrb-figure { margin: 0 0 1.75rem; max-width: 42rem; }
+.pcrb-figure img { border-radius: var(--border-radius); }
+.pcrb-closing .prose { max-width: var(--measure); }
+
+/* Page-link cards (Watch It Together / For Teachers and Students) */
+.pcrb-pagecards { padding: 1rem 0 3.5rem; }
+.pcrb-pagecard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; max-width: var(--measure-resources); }
+.pcrb-pagecard {
+  display: block;
+  padding: 1.75rem;
+  background: var(--band);
+  border: 1px solid var(--band-deep);
+  border-top: 5px solid var(--highlight);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: box-shadow 120ms ease, transform 120ms ease;
+}
+.pcrb-pagecard:hover { box-shadow: 0 12px 28px rgba(56, 80, 128, 0.14); transform: translateY(-2px); }
+.pcrb-pagecard-kicker { display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--primary); }
+.pcrb-pagecard p { margin: 0; color: var(--ink); font-size: 0.95rem; }
+
+/* Prev/next */
+.pcrb-prevnext { display: flex; justify-content: space-between; gap: 1.5rem; padding: 1.5rem 0 0; border-top: 1px solid var(--rule); max-width: var(--measure); }
+.pcrb-prevnext-link { display: flex; flex-direction: column; gap: 0.2rem; text-decoration: none; min-height: 44px; }
+.pcrb-next { margin-left: auto; text-align: right; }
+.pcrb-prevnext-dir { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-muted); }
+.pcrb-prevnext-label { font-weight: 700; color: var(--blue-deep); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.pcrb-prevnext-link:hover .pcrb-prevnext-label { color: var(--blue); }
+
+/* ------------------------------------------------------------
    Responsive
    ------------------------------------------------------------ */
 
@@ -676,6 +822,22 @@ img { max-width: 100%; height: auto; display: block; }
   .nav .nav-actions .btn { width: 100%; min-height: 48px; padding: 0.65rem 0.75rem; font-size: 0.88rem; }
   .nav .nav-actions .btn-quiet { background: var(--white); border-color: var(--primary); color: var(--primary); box-shadow: none; }
   .nav .nav-actions .btn-donate { background: var(--highlight); border-color: var(--highlight); color: var(--primary); box-shadow: none; }
+
+  /* Below the desktop breakpoint the masthead itself is no longer sticky
+     (see .masthead above), so there is nothing for this bar to dodge and
+     no viewport budget to spend keeping it pinned. Let it sit in the flow
+     instead — a horizontally scrolling row, never fixed over content. */
+  .pcrb-hero-grid { grid-template-columns: 1fr; gap: 1.5rem; min-height: 0; }
+  .pcrb-hero-copy { padding: 2.5rem 0 1.5rem; }
+  .pcrb-hero-copy h1 { max-width: none; }
+  .pcrb-stickybar {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    box-shadow: none;
+  }
+  .pcrb-section { scroll-margin-top: 1rem; }
 }
 
 @media (max-width: 40rem) {
@@ -693,6 +855,14 @@ img { max-width: 100%; height: auto; display: block; }
   .section-intro .wrap { padding-left: 3rem; }
   .section-intro .wrap::before { left: 1.1rem; }
   .entry { padding: 1.25rem; }
+
+  .pcrb-toc { padding: 1rem 1.1rem; }
+  .pcrb-toc ol { grid-template-columns: 1fr; }
+  .pcrb-pagecard-grid { grid-template-columns: 1fr; }
+  .pcrb-actions { flex-direction: column; align-items: flex-start; }
+  .pcrb-actions .btn { width: 100%; }
+  .pcrb-prevnext { flex-direction: column; gap: 1rem; }
+  .pcrb-next { text-align: left; margin-left: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

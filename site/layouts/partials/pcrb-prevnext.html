@@ -1,0 +1,31 @@
+{{/*
+  Prev/next for one step in the BC-PCRB sequence.
+  Usage: {{ partial "pcrb-prevnext" (dict "id" "risks" "page" .) }}
+*/}}
+{{ $chain := (index .page.Site.Data "bc-pcrb").chain }}
+{{ $idx := -1 }}
+{{ range $i, $item := $chain }}
+	{{ if eq $item.id $.id }}{{ $idx = $i }}{{ end }}
+{{ end }}
+{{ if ge $idx 0 }}
+	{{ $prev := "" }}
+	{{ if gt $idx 0 }}{{ $prev = index $chain (sub $idx 1) }}{{ end }}
+	{{ $next := "" }}
+	{{ if lt (add $idx 1) (len $chain) }}{{ $next = index $chain (add $idx 1) }}{{ end }}
+	<nav class="pcrb-prevnext" aria-label="Section navigation">
+		{{ if $prev }}
+			<a class="pcrb-prevnext-link pcrb-prev" href="{{ if eq $prev.kind "page" }}{{ $prev.page }}{{ else }}{{ $prev.page }}#{{ $prev.id }}{{ end }}">
+				<span class="pcrb-prevnext-dir">&larr; Previous</span>
+				<span class="pcrb-prevnext-label">{{ $prev.nav_label }}</span>
+			</a>
+		{{ else }}
+			<span></span>
+		{{ end }}
+		{{ if $next }}
+			<a class="pcrb-prevnext-link pcrb-next" href="{{ if eq $next.kind "page" }}{{ $next.page }}{{ else }}{{ $next.page }}#{{ $next.id }}{{ end }}">
+				<span class="pcrb-prevnext-dir">Next &rarr;</span>
+				<span class="pcrb-prevnext-label">{{ $next.nav_label }}</span>
+			</a>
+		{{ end }}
+	</nav>
+{{ end }}

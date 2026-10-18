@@ -1,0 +1,12 @@
+{{/* "On this page" jump list for the BC-PCRB long page. */}}
+<nav class="pcrb-toc" aria-label="On this page">
+	<p class="pcrb-toc-label">On this page</p>
+	<ol>
+		{{ range (index .Site.Data "bc-pcrb").chain }}
+			<li>
+				<a href="{{ if eq .kind "page" }}{{ .page }}{{ else }}{{ .page }}#{{ .id }}{{ end }}">{{ .nav_label }}</a>
+				{{ if eq .kind "page" }}<span class="pcrb-toc-flag">separate page</span>{{ end }}
+			</li>
+		{{ end }}
+	</ol>
+</nav>
